@@ -4,9 +4,16 @@ import { statuses } from '../const/statuses'
 
 const inputText = ref('')
 const inputDate = ref('')
+const errMsg = ref(false)
 const handleSubmit = (event) => {
   event.preventDefault()
 
+  if (inputText.value == '' || inputDate.value == '') {
+    return (errMsg.value = true)
+  }
+
+  // 'items'という名前(任意)のkeyにデータ保存
+  // itemsにデータなかったら空の配列を返す
   const items = JSON.parse(localStorage.getItem('items')) || []
 
   const newItem = {
@@ -23,6 +30,8 @@ const handleSubmit = (event) => {
 </script>
 
 <template>
+  <p v-if="errMsg">Todoと期限どちらも入力してください</p>
+
   <form @submit="handleSubmit">
     <label>Todo<input type="text" v-model="inputText" /></label>
     <label>期限<input type="date" v-model="inputDate" /></label>
