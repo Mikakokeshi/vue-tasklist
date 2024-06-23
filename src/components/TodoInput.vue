@@ -5,9 +5,7 @@ import { statuses } from '../const/statuses'
 const inputText = ref('')
 const inputDate = ref('')
 const errMsg = ref(false)
-const handleSubmit = (event) => {
-  event.preventDefault()
-
+const handleSubmit = () => {
   if (inputText.value == '' || inputDate.value == '') {
     return (errMsg.value = true)
   }
