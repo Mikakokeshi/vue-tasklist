@@ -5,9 +5,10 @@ import { statuses } from '../const/statuses'
 const inputText = ref('')
 const inputDate = ref('')
 const errMsg = ref(false)
-const handleSubmit = () => {
+const handleSubmit = (event) => {
   if (inputText.value == '' || inputDate.value == '') {
-    return (errMsg.value = true)
+    errMsg.value = true
+    event.preventDefault()
   }
 
   // 'items'という名前(任意)のkeyにデータ保存
