@@ -9,18 +9,23 @@ let inputContent = ref()
 let inputLimit = ref()
 let inputState = ref()
 let inputCategory = ref()
+let inputMemo = ref()
 let deleteItemId = ref()
+// let isEditting = ref(false)
 let isShowModal = ref(false)
 
 function onEdit(id) {
-  console.log(id)
+  // isEditting.value = true
+  // console.log(items.value[id])
   items.value[id].onEdit = true
-  console.log(items.value[id])
   inputContent.value = items.value[id].content
   inputLimit.value = items.value[id].limit
   inputState.value = items.value[id].state
   inputCategory.value = items.value[id].category
-  console.log(inputContent.value, inputLimit.value, inputState.value)
+  inputMemo.value = items.value[id].memo
+
+  // console.log(isEditting)
+  // console.log(inputContent.value, inputLimit.value, inputState.value)
 }
 console.log(inputCategory.value)
 
@@ -32,6 +37,7 @@ function onUpdate(id) {
     limit: inputLimit.value,
     state: inputState.value,
     category: inputCategory.value,
+    memo: inputMemo.value,
     onEdit: false
   }
   console.log(newItem)
@@ -59,11 +65,17 @@ function onDelete(id) {
     limit: item.limit,
     state: item.state,
     category: item.category,
+    memo: item.memo,
     onEdit: item.onEdit
   }))
   localStorage.setItem('items', JSON.stringify(items.value))
 
   isShowModal.value = false
+}
+
+function onMemoChange(event) {
+  console.log(event.target.value)
+  inputMemo.value = event.target.value
 }
 </script>
 
@@ -75,6 +87,7 @@ function onDelete(id) {
       <td>期限</td>
       <td>ステータス</td>
       <td>カテゴリ</td>
+      <td>メモ</td>
       <td>編集</td>
       <td>削除</td>
     </tr>
@@ -113,6 +126,10 @@ function onDelete(id) {
             {{ category.value }}
           </option>
         </select>
+      </td>
+      <td>
+        <span v-if="!item.onEdit">{{ item.memo }}</span>
+        <input v-else type="text" v-model="inputMemo" @change="onMemoChange($event)" />
       </td>
       <td>
         <button v-if="!item.onEdit" @click="onEdit(item.id)">編集</button>
@@ -156,6 +173,10 @@ function onDelete(id) {
 table span {
   width: 100%;
   padding: 5px;
+}
+
+table td {
+  width: 120px;
 }
 
 input,

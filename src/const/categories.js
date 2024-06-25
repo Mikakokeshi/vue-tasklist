@@ -6,5 +6,9 @@ export const categories = {
   WORK: {
     id: 1,
     value: '仕事'
+  },
+  STUDY: {
+    id: 2,
+    value: '勉強'
   }
 }
