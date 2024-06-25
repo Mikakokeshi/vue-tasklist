@@ -13,6 +13,7 @@ let inputMemo = ref()
 let deleteItemId = ref()
 let isEditting = ref(false)
 let isShowModal = ref(false)
+let isToday = ref(false)
 
 function onEdit(id) {
   console.log(isEditting.value)
@@ -84,30 +85,55 @@ function onMemoChange(event) {
   console.log(event.target.value)
   inputMemo.value = event.target.value
 }
+
+function ifToday() {
+  const today = new Date().toLocaleDateString('ja-JP').replaceAll('/', '-')
+  if ((inputLimit.value = today)) {
+    return isToday.value == true
+  }
+  console.log(today, inputLimit.value)
+}
+
+ifToday()
 </script>
 
 <template>
   <table>
     <tr>
-      <td>番号</td>
+      <th></th>
       <td>Todo</td>
       <td>期限</td>
       <td>ステータス</td>
       <td>カテゴリ</td>
       <td>メモ</td>
-      <td>編集</td>
-      <td>削除</td>
+      <td></td>
+      <td></td>
     </tr>
     <tr v-for="item in items" :key="item.id">
-      <td>{{ item.id + 1 }}</td>
+      <th>{{ item.id + 1 }}</th>
 
       <td>
         <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.content }}</span>
         <input v-model="inputContent" v-else type="text" />
       </td>
       <td>
-        <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.limit }}</span>
-        <input v-model="inputLimit" v-else type="date" />
+        <span :class="{ red: isToday }" v-if="!item.onEdit" @click="onEdit(item.id)">{{
+          item.limit
+        }}</span>
+        <!-- :class='{"クラス名", 条件} -->
+        <div v-else>
+          <VueDatePicker
+            showIcon
+            v-model="inputLimit"
+            format="yyyy/MM/dd"
+            locale="ja"
+            model-type="yyyy-MM-dd"
+            week-start="0"
+            :enable-time-picker="false"
+            :day-class="getDayClass"
+            :minDate="new Date()"
+          />
+        </div>
       </td>
       <td>
         <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.state.value }}</span>

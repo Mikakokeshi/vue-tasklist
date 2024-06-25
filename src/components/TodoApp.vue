@@ -4,7 +4,7 @@ import TodoLists from './TodoLists.vue'
 </script>
 
 <template>
-  <h1>Vue.js Todo App</h1>
+  <h1>Vue.js タスク管理 APP</h1>
   <TodoInput />
   <TodoLists />
 </template>

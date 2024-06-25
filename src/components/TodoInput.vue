@@ -33,6 +33,19 @@ const handleSelectChange = (event) => {
   inputCategory.value = event
   console.log(inputCategory.value)
 }
+
+const getDayClass = (date) => {
+  const weekDay = new Date(date).getDay()
+  if (weekDay == 6) {
+    // 土曜日の場合、classに"saturday"を追加
+    return 'saturday'
+  }
+  if (weekDay == 0) {
+    // 日曜日の場合、classに"sunday"を追加
+    return 'sunday'
+  }
+  return ''
+}
 </script>
 
 <template>
@@ -41,7 +54,21 @@ const handleSelectChange = (event) => {
   <form @submit="handleSubmit">
     <div class="form-wrap">
       <label>Todo<input type="text" v-model="inputText" /></label>
-      <label>期限<input type="date" v-model="inputDate" /></label>
+      <label
+        >期限
+        <div class="datepicker">
+          <VueDatePicker
+            showIcon
+            v-model="inputDate"
+            format="yyyy/MM/dd"
+            locale="ja"
+            model-type="yyyy-MM-dd"
+            week-start="0"
+            :enable-time-picker="false"
+            :day-class="getDayClass"
+            :minDate="new Date()"
+          /></div
+      ></label>
       <label
         >カテゴリ
         <select @change="handleSelectChange($event.target.value)">
@@ -74,5 +101,18 @@ form select {
 }
 .error {
   color: red;
+}
+.datepicker {
+  border: 1px solid rgb(118, 118, 118);
+}
+</style>
+
+<style>
+/* scopedの中には書かない */
+.saturday {
+  color: #0000ff;
+}
+.sunday {
+  color: #ff0000;
 }
 </style>
