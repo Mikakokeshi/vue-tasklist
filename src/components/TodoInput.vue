@@ -12,21 +12,21 @@ const handleSubmit = (event) => {
   if (inputText.value == '' || inputDate.value == '') {
     errMsg.value = true
     event.preventDefault()
+  } else {
+    // 'items'という名前(任意)のkeyにデータ保存
+    // itemsにデータなかったら空の配列を返す
+    const items = JSON.parse(localStorage.getItem('items')) || []
+    const newItem = {
+      id: items.length,
+      content: inputText.value,
+      limit: inputDate.value,
+      state: statuses.NOT_START,
+      category: inputCategory.value,
+      onEdit: false
+    }
+    items.push(newItem)
+    localStorage.setItem('items', JSON.stringify(items))
   }
-
-  // 'items'という名前(任意)のkeyにデータ保存
-  // itemsにデータなかったら空の配列を返す
-  const items = JSON.parse(localStorage.getItem('items')) || []
-  const newItem = {
-    id: items.length,
-    content: inputText.value,
-    limit: inputDate.value,
-    state: statuses.NOT_START,
-    category: inputCategory.value,
-    onEdit: false
-  }
-  items.push(newItem)
-  localStorage.setItem('items', JSON.stringify(items))
 }
 
 const handleSelectChange = (event) => {
@@ -36,7 +36,7 @@ const handleSelectChange = (event) => {
 </script>
 
 <template>
-  <p v-if="errMsg">Todoと期限どちらも入力してください</p>
+  <p v-if="errMsg" class="error">Todoと期限どちらも入力してください</p>
 
   <form @submit="handleSubmit">
     <div class="form-wrap">
@@ -71,5 +71,8 @@ form select {
   background-color: blue;
   color: #fff;
   font-weight: 600;
+}
+.error {
+  color: red;
 }
 </style>
