@@ -11,21 +11,27 @@ let inputState = ref()
 let inputCategory = ref()
 let inputMemo = ref()
 let deleteItemId = ref()
-// let isEditting = ref(false)
+let isEditting = ref(false)
 let isShowModal = ref(false)
 
 function onEdit(id) {
-  // isEditting.value = true
-  // console.log(items.value[id])
-  items.value[id].onEdit = true
-  inputContent.value = items.value[id].content
-  inputLimit.value = items.value[id].limit
-  inputState.value = items.value[id].state
-  inputCategory.value = items.value[id].category
-  inputMemo.value = items.value[id].memo
+  console.log(isEditting.value)
+  if (isEditting.value) {
+    return alert('編集中のタスクを完了してください')
+  } else {
+    isEditting.value = true
+    console.log('編集中なし')
+    items.value[id].onEdit = true
+    inputContent.value = items.value[id].content
+    inputLimit.value = items.value[id].limit
+    inputState.value = items.value[id].state
+    inputCategory.value = items.value[id].category
+    inputMemo.value = items.value[id].memo
 
-  // console.log(isEditting)
-  // console.log(inputContent.value, inputLimit.value, inputState.value)
+    console.log(isEditting.value)
+    // console.log(inputContent.value, inputLimit.value, inputState.value)
+    return
+  }
 }
 console.log(inputCategory.value)
 
@@ -42,6 +48,7 @@ function onUpdate(id) {
   }
   console.log(newItem)
   items.value.splice(id, 1, newItem)
+  isEditting.value = false
 
   localStorage.setItem('items', JSON.stringify(items.value))
 }
@@ -93,16 +100,17 @@ function onMemoChange(event) {
     </tr>
     <tr v-for="item in items" :key="item.id">
       <td>{{ item.id + 1 }}</td>
+
       <td>
-        <span v-if="!item.onEdit">{{ item.content }}</span>
+        <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.content }}</span>
         <input v-model="inputContent" v-else type="text" />
       </td>
       <td>
-        <span v-if="!item.onEdit">{{ item.limit }}</span>
+        <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.limit }}</span>
         <input v-model="inputLimit" v-else type="date" />
       </td>
       <td>
-        <span v-if="!item.onEdit">{{ item.state.value }}</span>
+        <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.state.value }}</span>
         <select v-else v-model="inputState">
           <option
             v-for="state in statuses"
@@ -115,7 +123,7 @@ function onMemoChange(event) {
         </select>
       </td>
       <td>
-        <span v-if="!item.onEdit">{{ item.category }}</span>
+        <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.category }}</span>
         <select v-else v-model="inputCategory">
           <option
             v-for="category in categories"
@@ -128,7 +136,7 @@ function onMemoChange(event) {
         </select>
       </td>
       <td>
-        <span v-if="!item.onEdit">{{ item.memo }}</span>
+        <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.memo }}</span>
         <input v-else type="text" v-model="inputMemo" @change="onMemoChange($event)" />
       </td>
       <td>
@@ -173,6 +181,7 @@ function onMemoChange(event) {
 table span {
   width: 100%;
   padding: 5px;
+  display: block;
 }
 
 table td {
@@ -183,5 +192,6 @@ input,
 select {
   width: 100%;
   padding: 3px;
+  height: 30px;
 }
 </style>
