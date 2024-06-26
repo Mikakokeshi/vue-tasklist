@@ -14,7 +14,7 @@ let inputMemo = ref()
 let deleteItemId = ref()
 let isEditting = ref(false)
 let isShowModal = ref(false)
-let isToday = ref(false)
+let isToday = ref()
 let notStartLength = ref()
 let doingLength = ref()
 let completedLength = ref()
@@ -34,6 +34,7 @@ function onEdit(id) {
     inputMemo.value = items.value[id].memo
 
     console.log(inputCategory.value)
+    console.log(inputLimit.value)
     // console.log(inputContent.value, inputLimit.value, inputState.value)
     return
   }
@@ -86,20 +87,8 @@ function onDelete(id) {
 }
 
 function onMemoChange(event) {
-  console.log(event.target.value)
   inputMemo.value = event.target.value
 }
-
-// 今日かどうか判定
-function ifToday() {
-  const today = new Date().toLocaleDateString('ja-JP').replaceAll('/', '-')
-  if ((inputLimit.value = today)) {
-    return isToday.value == true
-  }
-  console.log(today, inputLimit.value)
-}
-
-ifToday()
 
 //各カテゴリ数取得
 notStartLength.value = items.value.filter((item) => item.state.value === '未着手').length
@@ -112,13 +101,33 @@ const chartData = computed(() => {
     labels: ['未着手', '進行中', '完了'],
     datasets: [
       {
-        backgroundColor: ['#41B883', '#fbdb94', '#e76a6a'],
+        backgroundColor: ['#e76a6a', '#fbdb94', '#41B883'],
         data: [notStartLength.value, doingLength.value, completedLength.value]
       }
     ]
   }
 })
 // console.log(item.state)
+
+// 今日かどうか判定
+const today = new Date()
+  .toLocaleDateString('ja-JP', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  })
+  .replaceAll('/', '-')
+
+function ifToday() {
+  isToday.value = items.value.find((item) => item.limit === today)
+  console.log(today, isToday.value.limit)
+
+  if ((isToday.value = today)) {
+    return isToday.value == true
+  }
+}
+
+ifToday()
 </script>
 
 <template>
@@ -141,7 +150,7 @@ const chartData = computed(() => {
         <input v-model="inputContent" v-else type="text" />
       </td>
       <td>
-        <span :class="{ red: isToday }" v-if="!item.onEdit" @click="onEdit(item.id)">{{
+        <span :class="{ red: item.limit === today }" v-if="!item.onEdit" @click="onEdit(item.id)">{{
           item.limit
         }}</span>
         <!-- :class='{"クラス名", 条件} -->
@@ -204,7 +213,9 @@ const chartData = computed(() => {
       </td>
     </tr>
   </table>
-  <Pie :data="chartData" :options="options" />
+  <div class="piechart">
+    <Pie :data="chartData" :options="options" />
+  </div>
 </template>
 
 <style scoped>
@@ -244,5 +255,13 @@ select {
   width: 100%;
   padding: 3px;
   height: 30px;
+}
+.piechart {
+  width: 50%;
+  margin: 20px auto;
+}
+.red {
+  color: red;
+  font-weight: bold;
 }
 </style>
