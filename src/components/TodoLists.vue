@@ -1,7 +1,8 @@
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { statuses } from '../const/statuses'
 import { categories } from '../const/categories'
+import { Pie } from 'vue-chartjs'
 
 const items = ref(JSON.parse(localStorage.getItem('items')) || [])
 
@@ -14,6 +15,9 @@ let deleteItemId = ref()
 let isEditting = ref(false)
 let isShowModal = ref(false)
 let isToday = ref(false)
+let notStartLength = ref()
+let doingLength = ref()
+let completedLength = ref()
 
 function onEdit(id) {
   console.log(isEditting.value)
@@ -29,12 +33,11 @@ function onEdit(id) {
     inputCategory.value = items.value[id].category
     inputMemo.value = items.value[id].memo
 
-    console.log(isEditting.value)
+    console.log(inputCategory.value)
     // console.log(inputContent.value, inputLimit.value, inputState.value)
     return
   }
 }
-console.log(inputCategory.value)
 
 function onUpdate(id) {
   console.log(id)
@@ -53,6 +56,7 @@ function onUpdate(id) {
 
   localStorage.setItem('items', JSON.stringify(items.value))
 }
+console.log(items.value)
 
 function showDeleteModal(id, content) {
   isShowModal.value = true
@@ -86,6 +90,7 @@ function onMemoChange(event) {
   inputMemo.value = event.target.value
 }
 
+// 今日かどうか判定
 function ifToday() {
   const today = new Date().toLocaleDateString('ja-JP').replaceAll('/', '-')
   if ((inputLimit.value = today)) {
@@ -95,6 +100,25 @@ function ifToday() {
 }
 
 ifToday()
+
+//各カテゴリ数取得
+notStartLength.value = items.value.filter((item) => item.state.value === '未着手').length
+doingLength.value = items.value.filter((item) => item.state.value === '進行中').length
+completedLength.value = items.value.filter((item) => item.state.value === '完了').length
+
+// カテゴリごとに件数をカウント
+const chartData = computed(() => {
+  return {
+    labels: ['未着手', '進行中', '完了'],
+    datasets: [
+      {
+        backgroundColor: ['#41B883', '#fbdb94', '#e76a6a'],
+        data: [notStartLength.value, doingLength.value, completedLength.value]
+      }
+    ]
+  }
+})
+// console.log(item.state)
 </script>
 
 <template>
@@ -180,6 +204,7 @@ ifToday()
       </td>
     </tr>
   </table>
+  <Pie :data="chartData" :options="options" />
 </template>
 
 <style scoped>

@@ -1,11 +1,11 @@
 export const statuses = {
   NOT_START: {
     id: 0,
-    value: '未実施'
+    value: '未着手'
   },
   DOING: {
     id: 1,
-    value: '実施'
+    value: '進行中'
   },
   COMPLETED: {
     id: 2,
