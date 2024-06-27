@@ -78,7 +78,7 @@ const getDayClass = (date) => {
         </select>
       </label>
     </div>
-    <v-btn class="submit" type="submit">登録</v-btn>
+    <v-btn class="submit"> 登録 </v-btn>
   </form>
 </template>
 
@@ -121,9 +121,6 @@ form select {
 }
 .error {
   color: red;
-}
-.datepicker {
-  /* border: 1px solid rgb(118, 118, 118); */
 }
 </style>
 

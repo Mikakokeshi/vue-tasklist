@@ -127,38 +127,46 @@ function ifToday() {
 }
 ifToday()
 
+console.log(isSortState.value)
+
 // ソート
 function sortStateAse() {
-  isSortState.value = true
-  items.value.sort(function (a, b) {
-    if (a.state.value > b.state.value) {
-      return 1
-    } else {
-      return -1
-    }
-  })
-  const item = items.value.map((item, index) => {
-    item.id = index // Adjust based on your desired ID starting value
-    return item
-  })
-  localStorage.setItem('items', JSON.stringify(item))
+  console.log(isSortState.value)
+  if (isSortState.value == false) {
+    isSortState.value = true
+    items.value.sort(function (a, b) {
+      if (a.state.value > b.state.value) {
+        return 1
+      } else {
+        return -1
+      }
+    })
+    const item = items.value.map((item, index) => {
+      item.id = index // Adjust based on your desired ID starting value
+      return item
+    })
+    localStorage.setItem('items', JSON.stringify(item))
+    isSortState.value = true
+  }
 }
 
 function sortStateDse() {
-  isSortState.value = true
-
-  items.value.sort(function (a, b) {
-    if (a.state.value < b.state.value) {
-      return 1
-    } else {
-      return -1
-    }
-  })
-  const item = items.value.map((item, index) => {
-    item.id = index // Adjust based on your desired ID starting value
-    return item
-  })
-  localStorage.setItem('items', JSON.stringify(item))
+  console.log(isSortState.value)
+  if (isSortState.value == true) {
+    items.value.sort(function (a, b) {
+      if (a.state.value < b.state.value) {
+        return 1
+      } else {
+        return -1
+      }
+    })
+    const item = items.value.map((item, index) => {
+      item.id = index // Adjust based on your desired ID starting value
+      return item
+    })
+    localStorage.setItem('items', JSON.stringify(item))
+    isSortState.value = false
+  }
 }
 </script>
 
@@ -172,9 +180,10 @@ function sortStateDse() {
         <th class="sort_wrap">
           ステータス
           <div class="sort">
-            <!-- <button @click="sortStateAse()">↑</button> -->
-            <button @click="sortStateAse()">↑</button>
-            <button @click="sortStateDse()">↓</button>
+            <button v-if="!isSortState" @click="sortStateAse()">
+              <v-icon>mdi-sort-ascending</v-icon>
+            </button>
+            <button v-else @click="sortStateDse()"><v-icon>mdi-sort-descending</v-icon></button>
           </div>
         </th>
         <th>カテゴリ</th>
@@ -242,18 +251,22 @@ function sortStateDse() {
           <input v-else type="text" v-model="inputMemo" @change="onMemoChange($event)" />
         </td>
         <td class="button">
-          <button v-if="!item.onEdit" @click="onEdit(item.id)">編集</button>
-          <button v-else @click="onUpdate(item.id)">完了</button>
+          <button v-if="!item.onEdit" @click="onEdit(item.id)">
+            <v-icon>mdi-pencil</v-icon>
+          </button>
+          <button v-else @click="onUpdate(item.id)"><v-icon>mdi-check</v-icon></button>
         </td>
         <td class="button">
-          <button @click="showDeleteModal(item.id, item.content)">削除</button>
+          <button @click="showDeleteModal(item.id, item.content)">
+            <v-icon>mdi-delete</v-icon>
+          </button>
         </td>
         <!-- 削除モーダル -->
         <td v-if="isShowModal" class="modal">
           <div class="modal-content">
             <p>{{ ` タスク: 「${inputContent}」 ` }}本当に削除しますか？</p>
-            <button class="modal-button" @click="onDelete(deleteItemId)">はい</button>
-            <button class="modal-button" @click="closeDeleteModal">いいえ</button>
+            <v-btn class="modal-button" @click="onDelete(deleteItemId)"> はい </v-btn>
+            <v-btn class="modal-button" @click="closeDeleteModal">いいえ</v-btn>
           </div>
         </td>
       </tr>
@@ -272,7 +285,7 @@ function sortStateDse() {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.2);
   justify-content: center;
   display: flex;
   align-items: center;
@@ -282,6 +295,9 @@ function sortStateDse() {
   padding: 20px;
   border-radius: 10px;
   text-align: center;
+}
+.modal-content p {
+  padding-bottom: 10px;
 }
 .modal-button {
   margin: 5px;
@@ -307,6 +323,10 @@ table select {
 
 table .table_head .sort_wrap {
   display: flex;
+  justify-content: center;
+}
+.sort {
+  padding-left: 5px;
 }
 table th {
   font-size: 12px;
