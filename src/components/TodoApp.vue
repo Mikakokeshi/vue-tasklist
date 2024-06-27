@@ -11,4 +11,9 @@ import Chart from './Chart'
   <Chart />
 </template>
 
-<style scoped></style>
+<style scoped>
+h1 {
+  font-size: 20px;
+  font-weight: bold;
+}
+</style>

@@ -10,5 +10,9 @@ export const categories = {
   STUDY: {
     id: 2,
     value: '勉強'
+  },
+  OTHER: {
+    id: 3,
+    value: 'その他'
   }
 }

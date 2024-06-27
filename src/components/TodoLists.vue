@@ -18,8 +18,11 @@ let isToday = ref()
 let notStartLength = ref()
 let doingLength = ref()
 let completedLength = ref()
+let isSortState = ref(false)
 
 function onEdit(id) {
+  console.log(id)
+
   console.log(isEditting.value)
   if (isEditting.value) {
     return alert('編集中のタスクを完了してください')
@@ -33,8 +36,6 @@ function onEdit(id) {
     inputCategory.value = items.value[id].category
     inputMemo.value = items.value[id].memo
 
-    console.log(inputCategory.value)
-    console.log(inputLimit.value)
     // console.log(inputContent.value, inputLimit.value, inputState.value)
     return
   }
@@ -57,7 +58,44 @@ function onUpdate(id) {
 
   localStorage.setItem('items', JSON.stringify(items.value))
 }
-console.log(items.value)
+
+// ソート
+function sortStateAse() {
+  isSortState.value = true
+  items.value.sort(function (a, b) {
+    if (a.state.value > b.state.value) {
+      return 1
+    } else {
+      return -1
+    }
+  })
+  const item = items.value.map((item, index) => {
+    item.id = index + 1 // Adjust based on your desired ID starting value
+    return item
+  })
+  console.log(items, item)
+  localStorage.setItem('items', JSON.stringify(item))
+}
+console.log(isEditting.value)
+
+console.log(isSortState.value)
+function sortStateDse() {
+  isSortState.value = true
+
+  items.value.sort(function (a, b) {
+    if (a.state.value < b.state.value) {
+      return 1
+    } else {
+      return -1
+    }
+  })
+  const item = items.value.map((item, index) => {
+    item.id = index + 1 // Adjust based on your desired ID starting value
+    return item
+  })
+  console.log(items, item)
+  localStorage.setItem('items', JSON.stringify(item))
+}
 
 function showDeleteModal(id, content) {
   isShowModal.value = true
@@ -69,7 +107,6 @@ function closeDeleteModal() {
   isShowModal.value = false
 }
 function onDelete(id) {
-  console.log(id)
   const deleteItemId = id
   items.value.splice(deleteItemId, 1)
   items.value = items.value.map((item, index) => ({
@@ -90,12 +127,12 @@ function onMemoChange(event) {
   inputMemo.value = event.target.value
 }
 
-//各カテゴリ数取得
+//各ステータス数取得
 notStartLength.value = items.value.filter((item) => item.state.value === '未着手').length
 doingLength.value = items.value.filter((item) => item.state.value === '進行中').length
 completedLength.value = items.value.filter((item) => item.state.value === '完了').length
 
-// カテゴリごとに件数をカウント
+// ステータスごとに件数をカウント
 const chartData = computed(() => {
   return {
     labels: ['未着手', '進行中', '完了'],
@@ -120,7 +157,7 @@ const today = new Date()
 
 function ifToday() {
   isToday.value = items.value.find((item) => item.limit === today)
-  console.log(today, isToday.value.limit)
+  // console.log(today, isToday.value.limit)
 
   if ((isToday.value = today)) {
     return isToday.value == true
@@ -131,13 +168,20 @@ ifToday()
 </script>
 
 <template>
-  <div class="table_wrap">
+  <div v-if="items.length" class="table_wrap">
     <table>
       <tr>
         <th></th>
-        <th>Todo</th>
+        <th>タスク</th>
         <th class="limit">期限</th>
-        <th>ステータス</th>
+        <th>
+          ステータス
+          <div class="sort">
+            <!-- <button @click="sortStateAse()">↑</button> -->
+            <button @click="sortStateAse()">↑</button>
+            <button @click="sortStateDse()">↓</button>
+          </div>
+        </th>
         <th>カテゴリ</th>
         <th class="memo">メモ</th>
         <th></th>
@@ -220,7 +264,7 @@ ifToday()
       </tr>
     </table>
   </div>
-  <div class="piechart">
+  <div v-if="items.length" class="piechart">
     <Pie :data="chartData" :options="options" />
   </div>
 </template>
@@ -248,12 +292,8 @@ ifToday()
   margin: 5px;
 }
 
-.table_wrap {
-  overflow-x: auto;
-}
 .table_wrap table {
   border-collapse: collapse;
-  min-width: 700px;
   height: 100%;
   font-weight: bold;
   text-align: center;
@@ -306,6 +346,20 @@ select {
 .red {
   color: red;
   font-weight: bold;
+}
+
+@media screen and (max-width: 678px) {
+  .table_wrap {
+    overflow-x: scroll;
+    overflow-y: visible;
+  }
+  .table_wrap table {
+    border-collapse: collapse;
+    min-width: 700px;
+  }
+  .piechart {
+    width: 100%;
+  }
 }
 </style>
 
