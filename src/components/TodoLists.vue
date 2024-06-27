@@ -59,44 +59,6 @@ function onUpdate(id) {
   localStorage.setItem('items', JSON.stringify(items.value))
 }
 
-// ソート
-function sortStateAse() {
-  isSortState.value = true
-  items.value.sort(function (a, b) {
-    if (a.state.value > b.state.value) {
-      return 1
-    } else {
-      return -1
-    }
-  })
-  const item = items.value.map((item, index) => {
-    item.id = index // Adjust based on your desired ID starting value
-    return item
-  })
-  console.log(items, item)
-  localStorage.setItem('items', JSON.stringify(item))
-}
-console.log(isEditting.value)
-
-console.log(isSortState.value)
-function sortStateDse() {
-  isSortState.value = true
-
-  items.value.sort(function (a, b) {
-    if (a.state.value < b.state.value) {
-      return 1
-    } else {
-      return -1
-    }
-  })
-  const item = items.value.map((item, index) => {
-    item.id = index // Adjust based on your desired ID starting value
-    return item
-  })
-  console.log(items, item)
-  localStorage.setItem('items', JSON.stringify(item))
-}
-
 function showDeleteModal(id, content) {
   isShowModal.value = true
   deleteItemId.value = id
@@ -163,18 +125,51 @@ function ifToday() {
     return isToday.value == true
   }
 }
-
 ifToday()
+
+// ソート
+function sortStateAse() {
+  isSortState.value = true
+  items.value.sort(function (a, b) {
+    if (a.state.value > b.state.value) {
+      return 1
+    } else {
+      return -1
+    }
+  })
+  const item = items.value.map((item, index) => {
+    item.id = index // Adjust based on your desired ID starting value
+    return item
+  })
+  localStorage.setItem('items', JSON.stringify(item))
+}
+
+function sortStateDse() {
+  isSortState.value = true
+
+  items.value.sort(function (a, b) {
+    if (a.state.value < b.state.value) {
+      return 1
+    } else {
+      return -1
+    }
+  })
+  const item = items.value.map((item, index) => {
+    item.id = index // Adjust based on your desired ID starting value
+    return item
+  })
+  localStorage.setItem('items', JSON.stringify(item))
+}
 </script>
 
 <template>
   <div v-if="items.length" class="table_wrap">
     <table>
-      <tr>
+      <tr class="table_head">
         <th></th>
         <th>タスク</th>
         <th class="limit">期限</th>
-        <th>
+        <th class="sort_wrap">
           ステータス
           <div class="sort">
             <!-- <button @click="sortStateAse()">↑</button> -->
@@ -308,6 +303,10 @@ table input,
 table select {
   font-size: 12px;
   text-align: center;
+}
+
+table .table_head .sort_wrap {
+  display: flex;
 }
 table th {
   font-size: 12px;
