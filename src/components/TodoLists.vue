@@ -131,88 +131,95 @@ ifToday()
 </script>
 
 <template>
-  <table>
-    <tr>
-      <th></th>
-      <td>Todo</td>
-      <td>期限</td>
-      <td>ステータス</td>
-      <td>カテゴリ</td>
-      <td>メモ</td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr v-for="item in items" :key="item.id">
-      <th>{{ item.id + 1 }}</th>
+  <div class="table_wrap">
+    <table>
+      <tr>
+        <th></th>
+        <th>Todo</th>
+        <th class="limit">期限</th>
+        <th>ステータス</th>
+        <th>カテゴリ</th>
+        <th class="memo">メモ</th>
+        <th></th>
+        <th></th>
+      </tr>
+      <tr v-for="item in items" :key="item.id">
+        <th>{{ item.id + 1 }}</th>
 
-      <td>
-        <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.content }}</span>
-        <input v-model="inputContent" v-else type="text" />
-      </td>
-      <td>
-        <span :class="{ red: item.limit === today }" v-if="!item.onEdit" @click="onEdit(item.id)">{{
-          item.limit
-        }}</span>
-        <!-- :class='{"クラス名", 条件} -->
-        <div v-else>
-          <VueDatePicker
-            showIcon
-            v-model="inputLimit"
-            format="yyyy/MM/dd"
-            locale="ja"
-            model-type="yyyy-MM-dd"
-            week-start="0"
-            :enable-time-picker="false"
-            :day-class="getDayClass"
-            :minDate="new Date()"
-          />
-        </div>
-      </td>
-      <td>
-        <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.state.value }}</span>
-        <select v-else v-model="inputState">
-          <option
-            v-for="state in statuses"
-            :key="state.id"
-            :value="state"
-            :selected="state.id == item.state.id"
+        <td>
+          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.content }}</span>
+          <input v-model="inputContent" v-else type="text" />
+        </td>
+        <td>
+          <span
+            :class="{ red: item.limit === today }"
+            v-if="!item.onEdit"
+            @click="onEdit(item.id)"
+            >{{ item.limit }}</span
           >
-            {{ state.value }}
-          </option>
-        </select>
-      </td>
-      <td>
-        <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.category }}</span>
-        <select v-else v-model="inputCategory">
-          <option
-            v-for="category in categories"
-            :key="category.id"
-            :value="category.value"
-            :selected="category.id == item.category.id"
-          >
-            {{ category.value }}
-          </option>
-        </select>
-      </td>
-      <td>
-        <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.memo }}</span>
-        <input v-else type="text" v-model="inputMemo" @change="onMemoChange($event)" />
-      </td>
-      <td>
-        <button v-if="!item.onEdit" @click="onEdit(item.id)">編集</button>
-        <button v-else @click="onUpdate(item.id)">完了</button>
-      </td>
-      <td><button @click="showDeleteModal(item.id, item.content)">削除</button></td>
-      <!-- 削除モーダル -->
-      <td v-if="isShowModal" class="modal">
-        <div class="modal-content">
-          <p>{{ ` タスク: 「${inputContent}」 ` }}本当に削除しますか？</p>
-          <button class="modal-button" @click="onDelete(deleteItemId)">はい</button>
-          <button class="modal-button" @click="closeDeleteModal">いいえ</button>
-        </div>
-      </td>
-    </tr>
-  </table>
+          <!-- :class='{"クラス名", 条件} -->
+          <div v-else>
+            <VueDatePicker
+              showIcon
+              v-model="inputLimit"
+              format="yyyy/MM/dd"
+              locale="ja"
+              model-type="yyyy-MM-dd"
+              week-start="0"
+              :enable-time-picker="false"
+              :day-class="getDayClass"
+              :minDate="new Date()"
+            />
+          </div>
+        </td>
+        <td>
+          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.state.value }}</span>
+          <select v-else v-model="inputState">
+            <option
+              v-for="state in statuses"
+              :key="state.id"
+              :value="state"
+              :selected="state.id == item.state.id"
+            >
+              {{ state.value }}
+            </option>
+          </select>
+        </td>
+        <td>
+          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.category }}</span>
+          <select v-else v-model="inputCategory">
+            <option
+              v-for="category in categories"
+              :key="category.id"
+              :value="category.value"
+              :selected="category.id == item.category.id"
+            >
+              {{ category.value }}
+            </option>
+          </select>
+        </td>
+        <td>
+          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.memo }}</span>
+          <input v-else type="text" v-model="inputMemo" @change="onMemoChange($event)" />
+        </td>
+        <td class="button">
+          <button v-if="!item.onEdit" @click="onEdit(item.id)">編集</button>
+          <button v-else @click="onUpdate(item.id)">完了</button>
+        </td>
+        <td class="button">
+          <button @click="showDeleteModal(item.id, item.content)">削除</button>
+        </td>
+        <!-- 削除モーダル -->
+        <td v-if="isShowModal" class="modal">
+          <div class="modal-content">
+            <p>{{ ` タスク: 「${inputContent}」 ` }}本当に削除しますか？</p>
+            <button class="modal-button" @click="onDelete(deleteItemId)">はい</button>
+            <button class="modal-button" @click="closeDeleteModal">いいえ</button>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
   <div class="piechart">
     <Pie :data="chartData" :options="options" />
   </div>
@@ -240,14 +247,49 @@ ifToday()
 .modal-button {
   margin: 5px;
 }
+
+.table_wrap {
+  overflow-x: auto;
+}
+.table_wrap table {
+  border-collapse: collapse;
+  min-width: 700px;
+  height: 100%;
+  font-weight: bold;
+  text-align: center;
+}
 table span {
   width: 100%;
   padding: 5px;
   display: block;
+  font-size: 12px;
 }
-
+table input,
+table select {
+  font-size: 12px;
+  text-align: center;
+}
+table th {
+  font-size: 12px;
+  font-weight: bold;
+}
 table td {
   width: 120px;
+}
+table .button {
+  width: 50px;
+}
+
+table .limit {
+  width: 180px;
+}
+table .memo {
+  width: 220px;
+}
+
+table .button button {
+  font-size: 11px;
+  padding: 4px;
 }
 
 input,
@@ -255,6 +297,7 @@ select {
   width: 100%;
   padding: 3px;
   height: 30px;
+  border: 1px solid light-black;
 }
 .piechart {
   width: 50%;
@@ -263,5 +306,17 @@ select {
 .red {
   color: red;
   font-weight: bold;
+}
+</style>
+
+<style>
+.table_wrap .dp__pointer {
+  font-size: 12px !important;
+  border: 1px solid rgb(118, 118, 118) !important;
+  height: 30px !important;
+}
+.dp__menu {
+  position: relative;
+  z-index: 2;
 }
 </style>

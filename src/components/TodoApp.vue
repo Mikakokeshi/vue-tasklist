@@ -1,7 +1,7 @@
 <script setup>
 import TodoInput from './TodoInput.vue'
 import TodoLists from './TodoLists.vue'
-import Chart from './Chart.vue'
+import Chart from './Chart'
 </script>
 
 <template>

@@ -53,7 +53,7 @@ const getDayClass = (date) => {
 
   <form @submit="handleSubmit">
     <div class="form-wrap">
-      <label>Todo<input type="text" v-model="inputText" /></label>
+      <label>タスク<input type="text" v-model="inputText" /></label>
       <label
         >期限
         <div class="datepicker">
@@ -83,27 +83,47 @@ const getDayClass = (date) => {
 </template>
 
 <style scoped>
+form {
+  /* border: 1px solid #ccc; */
+  border-radius: 10px;
+  /* padding: 30px 40px; */
+  margin: 40px 0 50px;
+}
 .form-wrap {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+form label {
+  font-size: 12px;
+  font-weight: bold;
+}
 form input,
 form select {
   width: 100%;
-  padding: 5px;
+  padding: 10px;
+  height: 38px;
+  border-radius: 5px;
+  border: 1px solid;
 }
 .submit {
-  margin: 10px 0 10px 0;
-  background-color: blue;
+  margin: 20px auto 10px;
+  background-color: rgb(16, 107, 203);
   color: #fff;
   font-weight: 600;
+  width: 280px;
+  display: block;
+  height: 40px;
+}
+
+.datepicker input {
+  border-radius: 5px !important;
 }
 .error {
   color: red;
 }
 .datepicker {
-  border: 1px solid rgb(118, 118, 118);
+  /* border: 1px solid rgb(118, 118, 118); */
 }
 </style>
 
@@ -114,5 +134,10 @@ form select {
 }
 .sunday {
   color: #ff0000;
+}
+
+.form-wrap .dp__pointer {
+  height: 38px !important;
+  border: 1px solid #000;
 }
 </style>
