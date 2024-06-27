@@ -70,7 +70,7 @@ function sortStateAse() {
     }
   })
   const item = items.value.map((item, index) => {
-    item.id = index + 1 // Adjust based on your desired ID starting value
+    item.id = index // Adjust based on your desired ID starting value
     return item
   })
   console.log(items, item)
@@ -90,7 +90,7 @@ function sortStateDse() {
     }
   })
   const item = items.value.map((item, index) => {
-    item.id = index + 1 // Adjust based on your desired ID starting value
+    item.id = index // Adjust based on your desired ID starting value
     return item
   })
   console.log(items, item)
