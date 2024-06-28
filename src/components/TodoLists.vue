@@ -18,10 +18,12 @@ let isToday = ref()
 let notStartLength = ref()
 let doingLength = ref()
 let completedLength = ref()
-let isSortAscendingStatus = ref(false) // Track sorting direction
-let isSortAscendingLimit = ref(false) // Track sorting direction
-let isSortLimit = ref(false) // Track sorting direction
-let isSortState = ref(false) // Track sorting direction
+let isSortAscendingStatus = ref(false)
+let isSortAscendingLimit = ref(false)
+let isSortAscendingCategory = ref(false)
+let isSortLimit = ref(false)
+let isSortState = ref(false)
+let isSortCategory = ref(false)
 
 function onEdit(id) {
   console.log(id)
@@ -138,7 +140,6 @@ function sortState() {
     if (isSortState.value) {
       if (isSortAscendingStatus.value) {
         console.log('ステータス　昇順')
-
         return a.state.value > b.state.value ? 1 : -1
       } else {
         console.log('ステータス　降順')
@@ -154,6 +155,14 @@ function sortState() {
 
         return a.limit < b.limit ? 1 : -1
       }
+    } else if (isSortCategory.value) {
+      if (isSortAscendingCategory.value) {
+        console.log('カテゴリ　昇順')
+        return a.category > b.category ? 1 : -1
+      } else {
+        console.log('カテゴリ 降順')
+        return a.category < b.category ? 1 : -1
+      }
     }
   })
   const updatedItem = items.value.map((item, index) => {
@@ -165,6 +174,7 @@ function sortState() {
 
 function toggleSortStatus() {
   isSortLimit.value = false
+  isSortCategory.value = false
   isSortState.value = true
   isSortAscendingStatus.value = !isSortAscendingStatus.value // Toggle sorting direction
   sortState()
@@ -172,8 +182,16 @@ function toggleSortStatus() {
 
 function toggleSortLimit() {
   isSortState.value = false
+  isSortCategory.value = false
   isSortLimit.value = true
   isSortAscendingLimit.value = !isSortAscendingLimit.value // Toggle sorting direction
+  sortState()
+}
+function toggleSortCategory() {
+  isSortState.value = false
+  isSortLimit.value = false
+  isSortCategory.value = true
+  isSortAscendingCategory.value = !isSortAscendingCategory.value // Toggle sorting direction
   sortState()
 }
 </script>
@@ -187,7 +205,6 @@ function toggleSortLimit() {
         <th class="limit">
           <div class="sort_wrap">
             期限
-
             <div class="sort">
               <button v-if="!isSortAscendingLimit" @click="toggleSortLimit()">
                 <v-icon>mdi-sort-ascending</v-icon>
@@ -211,7 +228,19 @@ function toggleSortLimit() {
             </div>
           </div>
         </th>
-        <th>カテゴリ</th>
+        <th>
+          <div class="sort_wrap">
+            カテゴリ
+            <div class="sort">
+              <button v-if="!isSortAscendingCategory" @click="toggleSortCategory()">
+                <v-icon>mdi-sort-ascending</v-icon>
+              </button>
+              <button v-else @click="toggleSortCategory()">
+                <v-icon>mdi-sort-descending</v-icon>
+              </button>
+            </div>
+          </div>
+        </th>
         <th class="memo">メモ</th>
         <th></th>
         <th></th>
@@ -349,6 +378,7 @@ table select {
 table .table_head .sort_wrap {
   display: flex;
   justify-content: center;
+  font-weight: bold;
 }
 .sort {
   padding-left: 5px;
@@ -361,7 +391,7 @@ table td {
   width: 120px;
 }
 table .button {
-  width: 50px;
+  width: 30px;
 }
 
 table .limit {
@@ -381,7 +411,8 @@ select {
   width: 100%;
   padding: 3px;
   height: 30px;
-  border: 1px solid light-black;
+  border: 1px solid rgb(118, 118, 118);
+  border-radius: 5px;
 }
 .piechart {
   width: 50%;

@@ -78,7 +78,7 @@ const getDayClass = (date) => {
         </select>
       </label>
     </div>
-    <v-btn class="submit"> 登録 </v-btn>
+    <v-btn class="submit" type="submit"> 登録 </v-btn>
   </form>
 </template>
 
@@ -105,6 +105,7 @@ form select {
   height: 38px;
   border-radius: 5px;
   border: 1px solid;
+  font-weight: 400;
 }
 .submit {
   margin: 20px auto 10px;
