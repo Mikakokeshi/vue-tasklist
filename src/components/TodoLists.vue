@@ -18,7 +18,7 @@ let isToday = ref()
 let notStartLength = ref()
 let doingLength = ref()
 let completedLength = ref()
-let isSortState = ref(false)
+let isSortAscending = ref(false) // Track sorting direction
 
 function onEdit(id) {
   console.log(id)
@@ -129,45 +129,67 @@ ifToday()
 
 console.log(isSortState.value)
 
-// ソート
-function sortStateAse() {
+function sortState() {
   console.log(isSortState.value)
-  if (isSortState.value == false) {
-    isSortState.value = true
-    items.value.sort(function (a, b) {
-      if (a.state.value > b.state.value) {
-        return 1
-      } else {
-        return -1
-      }
-    })
-    const item = items.value.map((item, index) => {
-      item.id = index // Adjust based on your desired ID starting value
-      return item
-    })
-    localStorage.setItem('items', JSON.stringify(item))
-    isSortState.value = true
-  }
+  items.value.sort((a, b) => {
+    if (isSortAscending.value) {
+      return a.state.value > b.state.value ? 1 : -1
+    } else {
+      return a.state.value < b.state.value ? 1 : -1
+    }
+  })
+  const updatedItem = items.value.map((item, index) => {
+    item.id = index // Adjust based on your desired ID starting value
+    return item
+  })
+  localStorage.setItem('items', JSON.stringify(updatedItem))
 }
 
-function sortStateDse() {
-  console.log(isSortState.value)
-  if (isSortState.value == true) {
-    items.value.sort(function (a, b) {
-      if (a.state.value < b.state.value) {
-        return 1
-      } else {
-        return -1
-      }
-    })
-    const item = items.value.map((item, index) => {
-      item.id = index // Adjust based on your desired ID starting value
-      return item
-    })
-    localStorage.setItem('items', JSON.stringify(item))
-    isSortState.value = false
-  }
+function toggleSort() {
+  isSortAscending.value = !isSortAscending.value // Toggle sorting direction
+  sortState()
 }
+
+// ソート 昇順
+// function sortStateAse() {
+//   console.log(isSortState.value)
+//   if (isSortState.value == false) {
+//     isSortState.value = true
+//     items.value.sort(function (a, b) {
+//       if (a.state.value > b.state.value) {
+//         return 1
+//       } else {
+//         return -1
+//       }
+//     })
+//     const item = items.value.map((item, index) => {
+//       item.id = index // Adjust based on your desired ID starting value
+//       return item
+//     })
+//     localStorage.setItem('items', JSON.stringify(item))
+//     isSortState.value = true
+//   }
+// }
+
+// // ソート降順
+// function sortStateDse() {
+//   console.log(isSortState.value)
+//   if (isSortState.value == true) {
+//     items.value.sort(function (a, b) {
+//       if (a.state.value < b.state.value) {
+//         return 1
+//       } else {
+//         return -1
+//       }
+//     })
+//     const item = items.value.map((item, index) => {
+//       item.id = index // Adjust based on your desired ID starting value
+//       return item
+//     })
+//     localStorage.setItem('items', JSON.stringify(item))
+//     isSortState.value = false
+//   }
+// }
 </script>
 
 <template>
@@ -176,14 +198,25 @@ function sortStateDse() {
       <tr class="table_head">
         <th></th>
         <th>タスク</th>
-        <th class="limit">期限</th>
+        <th class="limit">
+          期限
+
+          <div class="sort">
+            <button v-if="!isSortAscending" @click="toggleSort()">
+              <v-icon>mdi-sort-ascending</v-icon>
+            </button>
+            <button v-else @click="toggleSort()">
+              <v-icon>mdi-sort-descending</v-icon>
+            </button>
+          </div>
+        </th>
         <th class="sort_wrap">
           ステータス
           <div class="sort">
-            <button v-if="!isSortState" @click="sortStateAse()">
+            <button v-if="!isSortAscending" @click="toggleSort()">
               <v-icon>mdi-sort-ascending</v-icon>
             </button>
-            <button v-else @click="sortStateDse()"><v-icon>mdi-sort-descending</v-icon></button>
+            <button v-else @click="toggleSort()"><v-icon>mdi-sort-descending</v-icon></button>
           </div>
         </th>
         <th>カテゴリ</th>
@@ -378,6 +411,7 @@ select {
   }
   .piechart {
     width: 100%;
+    margin: 40px auto;
   }
 }
 </style>
