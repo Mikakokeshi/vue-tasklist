@@ -18,7 +18,10 @@ let isToday = ref()
 let notStartLength = ref()
 let doingLength = ref()
 let completedLength = ref()
-let isSortAscending = ref(false) // Track sorting direction
+let isSortAscendingStatus = ref(false) // Track sorting direction
+let isSortAscendingLimit = ref(false) // Track sorting direction
+let isSortLimit = ref(false) // Track sorting direction
+let isSortState = ref(false) // Track sorting direction
 
 function onEdit(id) {
   console.log(id)
@@ -127,15 +130,30 @@ function ifToday() {
 }
 ifToday()
 
-console.log(isSortState.value)
-
+// ソート
 function sortState() {
-  console.log(isSortState.value)
   items.value.sort((a, b) => {
-    if (isSortAscending.value) {
-      return a.state.value > b.state.value ? 1 : -1
-    } else {
-      return a.state.value < b.state.value ? 1 : -1
+    console.log(items.value)
+
+    if (isSortState.value) {
+      if (isSortAscendingStatus.value) {
+        console.log('ステータス　昇順')
+
+        return a.state.value > b.state.value ? 1 : -1
+      } else {
+        console.log('ステータス　降順')
+
+        return a.state.value < b.state.value ? 1 : -1
+      }
+    } else if (isSortLimit.value) {
+      if (isSortAscendingLimit.value) {
+        console.log('期限　昇順')
+        return a.limit > b.limit ? 1 : -1
+      } else {
+        console.log('期限 降順')
+
+        return a.limit < b.limit ? 1 : -1
+      }
     }
   })
   const updatedItem = items.value.map((item, index) => {
@@ -145,51 +163,19 @@ function sortState() {
   localStorage.setItem('items', JSON.stringify(updatedItem))
 }
 
-function toggleSort() {
-  isSortAscending.value = !isSortAscending.value // Toggle sorting direction
+function toggleSortStatus() {
+  isSortLimit.value = false
+  isSortState.value = true
+  isSortAscendingStatus.value = !isSortAscendingStatus.value // Toggle sorting direction
   sortState()
 }
 
-// ソート 昇順
-// function sortStateAse() {
-//   console.log(isSortState.value)
-//   if (isSortState.value == false) {
-//     isSortState.value = true
-//     items.value.sort(function (a, b) {
-//       if (a.state.value > b.state.value) {
-//         return 1
-//       } else {
-//         return -1
-//       }
-//     })
-//     const item = items.value.map((item, index) => {
-//       item.id = index // Adjust based on your desired ID starting value
-//       return item
-//     })
-//     localStorage.setItem('items', JSON.stringify(item))
-//     isSortState.value = true
-//   }
-// }
-
-// // ソート降順
-// function sortStateDse() {
-//   console.log(isSortState.value)
-//   if (isSortState.value == true) {
-//     items.value.sort(function (a, b) {
-//       if (a.state.value < b.state.value) {
-//         return 1
-//       } else {
-//         return -1
-//       }
-//     })
-//     const item = items.value.map((item, index) => {
-//       item.id = index // Adjust based on your desired ID starting value
-//       return item
-//     })
-//     localStorage.setItem('items', JSON.stringify(item))
-//     isSortState.value = false
-//   }
-// }
+function toggleSortLimit() {
+  isSortState.value = false
+  isSortLimit.value = true
+  isSortAscendingLimit.value = !isSortAscendingLimit.value // Toggle sorting direction
+  sortState()
+}
 </script>
 
 <template>
@@ -199,24 +185,30 @@ function toggleSort() {
         <th></th>
         <th>タスク</th>
         <th class="limit">
-          期限
+          <div class="sort_wrap">
+            期限
 
-          <div class="sort">
-            <button v-if="!isSortAscending" @click="toggleSort()">
-              <v-icon>mdi-sort-ascending</v-icon>
-            </button>
-            <button v-else @click="toggleSort()">
-              <v-icon>mdi-sort-descending</v-icon>
-            </button>
+            <div class="sort">
+              <button v-if="!isSortAscendingLimit" @click="toggleSortLimit()">
+                <v-icon>mdi-sort-ascending</v-icon>
+              </button>
+              <button v-else @click="toggleSortLimit()">
+                <v-icon>mdi-sort-descending</v-icon>
+              </button>
+            </div>
           </div>
         </th>
-        <th class="sort_wrap">
-          ステータス
-          <div class="sort">
-            <button v-if="!isSortAscending" @click="toggleSort()">
-              <v-icon>mdi-sort-ascending</v-icon>
-            </button>
-            <button v-else @click="toggleSort()"><v-icon>mdi-sort-descending</v-icon></button>
+        <th class="">
+          <div class="sort_wrap">
+            ステータス
+            <div class="sort">
+              <button v-if="!isSortAscendingStatus" @click="toggleSortStatus()">
+                <v-icon>mdi-sort-ascending</v-icon>
+              </button>
+              <button v-else @click="toggleSortStatus()">
+                <v-icon>mdi-sort-descending</v-icon>
+              </button>
+            </div>
           </div>
         </th>
         <th>カテゴリ</th>
