@@ -1,10 +1,9 @@
-<script setup>
-import TodoApp from './components/TodoApp.vue'
-</script>
+<script setup></script>
 
 <template>
   <main>
-    <TodoApp />
+    <router-link to="/">Home</router-link> | <router-link to="/calendar">calendar</router-link> |
+    <router-view></router-view>
   </main>
 </template>
 
