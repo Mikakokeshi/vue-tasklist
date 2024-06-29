@@ -3,6 +3,8 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 
+const items = JSON.parse(localStorage.getItem('items')) || []
+
 export default {
   components: {
     FullCalendar // make the <FullCalendar> tag available
@@ -13,10 +15,12 @@ export default {
         plugins: [dayGridPlugin, interactionPlugin],
         initialView: 'dayGridMonth',
         dateClick: this.handleDateClick,
-        events: [
-          { title: 'event 1', date: '2024-06-01' },
-          { title: 'event 2', date: '2024-06-02' }
-        ]
+
+        // itemsオブジェクトをループしてイベントを生成
+        events: items.map((item) => ({
+          title: item.content, // イベントタイトルをアイテムのコンテンツに設定
+          date: item.limit // イベント日付をアイテムの制限日に設定
+        }))
       }
     }
   },
