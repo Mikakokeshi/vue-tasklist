@@ -2,11 +2,14 @@
 import { ref } from 'vue'
 import { statuses } from '../const/statuses'
 import { categories } from '../const/categories'
+import { priorities } from '../const/priorities'
 
 const inputText = ref('')
 const inputDate = ref('')
 const errMsg = ref(false)
 const inputCategory = ref('プライベート')
+const inputPriority = ref('Middle')
+const inputMemo = ref('')
 
 const handleSubmit = (event) => {
   if (inputText.value == '' || inputDate.value == '') {
@@ -22,6 +25,8 @@ const handleSubmit = (event) => {
       limit: inputDate.value,
       state: statuses.NOT_START,
       category: inputCategory.value,
+      priority: inputPriority.value,
+      memo: inputMemo.value,
       onEdit: false
     }
     items.push(newItem)
@@ -29,9 +34,13 @@ const handleSubmit = (event) => {
   }
 }
 
-const handleSelectChange = (event) => {
+const handleSelectChangeCategory = (event) => {
   inputCategory.value = event
   console.log(inputCategory.value)
+}
+const handleSelectChangePriority = (event) => {
+  inputPriority.value = event
+  console.log(inputPriority.value)
 }
 
 const getDayClass = (date) => {
@@ -54,29 +63,43 @@ const getDayClass = (date) => {
   <form @submit="handleSubmit">
     <div class="form-wrap">
       <label>タスク<input type="text" v-model="inputText" /></label>
-      <label
-        >期限
-        <div class="datepicker">
-          <VueDatePicker
-            showIcon
-            v-model="inputDate"
-            format="yyyy/MM/dd"
-            locale="ja"
-            model-type="yyyy-MM-dd"
-            week-start="0"
-            :enable-time-picker="false"
-            :day-class="getDayClass"
-            :minDate="new Date()"
-          /></div
-      ></label>
-      <label
-        >カテゴリ
-        <select @change="handleSelectChange($event.target.value)">
-          <option v-for="category in categories" :key="category">
-            {{ category.value }}
-          </option>
-        </select>
-      </label>
+
+      <div class="input-col">
+        <label
+          >期限
+          <div class="datepicker">
+            <VueDatePicker
+              showIcon
+              v-model="inputDate"
+              format="yyyy/MM/dd"
+              locale="ja"
+              model-type="yyyy-MM-dd"
+              week-start="0"
+              :enable-time-picker="false"
+              :day-class="getDayClass"
+              :minDate="new Date()"
+            /></div
+        ></label>
+        <label
+          >カテゴリ
+          <select @change="handleSelectChangeCategory($event.target.value)">
+            <option v-for="category in categories" :key="category">
+              {{ category.value }}
+            </option>
+          </select>
+        </label>
+      </div>
+      <div class="input-col">
+        <label
+          >重要度
+          <select @change="handleSelectChangePriority($event.target.value)">
+            <option v-for="priority in priorities" :key="priority">
+              {{ priority.value }}
+            </option>
+          </select>
+        </label>
+        <label>メモ<input type="text" v-model="inputMemo" /></label>
+      </div>
     </div>
     <v-btn class="submit" type="submit"> 登録 </v-btn>
   </form>
@@ -93,6 +116,13 @@ form {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+.input-col {
+  display: flex;
+  gap: 30px;
+}
+.input-col label {
+  flex: 1;
 }
 form label {
   font-size: 12px;
@@ -134,8 +164,10 @@ form select {
   color: #ff0000;
 }
 
-.form-wrap .dp__pointer {
+.form-wrap .dp__pointer,
+.dp__cell_inner {
   height: 38px !important;
   border: 1px solid #000;
+  font-size: 12px;
 }
 </style>

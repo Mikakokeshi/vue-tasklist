@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { statuses } from '../const/statuses'
 import { categories } from '../const/categories'
+import { priorities } from '../const/priorities'
 import { Pie } from 'vue-chartjs'
 
 const items = ref(JSON.parse(localStorage.getItem('items')) || [])
@@ -10,6 +11,7 @@ let inputContent = ref()
 let inputLimit = ref()
 let inputState = ref()
 let inputCategory = ref()
+let inputPriority = ref()
 let inputMemo = ref()
 let deleteItemId = ref()
 let isEditting = ref(false)
@@ -21,9 +23,11 @@ let completedLength = ref()
 let isSortAscendingStatus = ref(false)
 let isSortAscendingLimit = ref(false)
 let isSortAscendingCategory = ref(false)
+let isSortAscendingPriority = ref(false)
 let isSortLimit = ref(false)
 let isSortState = ref(false)
 let isSortCategory = ref(false)
+let isSortPriority = ref(false)
 
 function onEdit(id) {
   console.log(id)
@@ -39,12 +43,14 @@ function onEdit(id) {
     inputLimit.value = items.value[id].limit
     inputState.value = items.value[id].state
     inputCategory.value = items.value[id].category
+    inputPriority.value = items.value[id].priority
     inputMemo.value = items.value[id].memo
 
     // console.log(inputContent.value, inputLimit.value, inputState.value)
     return
   }
 }
+console.log(items)
 
 function onUpdate(id) {
   console.log(id)
@@ -54,6 +60,7 @@ function onUpdate(id) {
     limit: inputLimit.value,
     state: inputState.value,
     category: inputCategory.value,
+    priority: inputPriority.value,
     memo: inputMemo.value,
     onEdit: false
   }
@@ -82,6 +89,7 @@ function onDelete(id) {
     limit: item.limit,
     state: item.state,
     category: item.category,
+    pritority: item.pritority,
     memo: item.memo,
     onEdit: item.onEdit
   }))
@@ -163,6 +171,14 @@ function sortState() {
         console.log('カテゴリ 降順')
         return a.category < b.category ? 1 : -1
       }
+    } else if (isSortPriority.value) {
+      if (isSortAscendingPriority.value) {
+        console.log('プライオリティ　昇順')
+        return a.priority > b.priority ? 1 : -1
+      } else {
+        console.log('プライオリティ 降順')
+        return a.priority < b.priority ? 1 : -1
+      }
     }
   })
   const updatedItem = items.value.map((item, index) => {
@@ -183,6 +199,7 @@ function toggleSortStatus() {
 function toggleSortLimit() {
   isSortState.value = false
   isSortCategory.value = false
+  isSortPriority.value = false
   isSortLimit.value = true
   isSortAscendingLimit.value = !isSortAscendingLimit.value // Toggle sorting direction
   sortState()
@@ -190,8 +207,17 @@ function toggleSortLimit() {
 function toggleSortCategory() {
   isSortState.value = false
   isSortLimit.value = false
+  isSortPriority.value = false
   isSortCategory.value = true
   isSortAscendingCategory.value = !isSortAscendingCategory.value // Toggle sorting direction
+  sortState()
+}
+function toggleSortPriority() {
+  isSortState.value = false
+  isSortLimit.value = false
+  isSortCategory.value = false
+  isSortPriority.value = true
+  isSortAscendingPriority.value = !isSortAscendingPriority.value // Toggle sorting direction
   sortState()
 }
 </script>
@@ -236,6 +262,19 @@ function toggleSortCategory() {
                 <v-icon>mdi-sort-ascending</v-icon>
               </button>
               <button v-else @click="toggleSortCategory()">
+                <v-icon>mdi-sort-descending</v-icon>
+              </button>
+            </div>
+          </div>
+        </th>
+        <th>
+          <div class="sort_wrap">
+            重要度
+            <div class="sort">
+              <button v-if="!isSortAscendingPriority" @click="toggleSortPriority()">
+                <v-icon>mdi-sort-ascending</v-icon>
+              </button>
+              <button v-else @click="toggleSortPriority()">
                 <v-icon>mdi-sort-descending</v-icon>
               </button>
             </div>
@@ -297,6 +336,19 @@ function toggleSortCategory() {
               :selected="category.id == item.category.id"
             >
               {{ category.value }}
+            </option>
+          </select>
+        </td>
+        <td>
+          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.priority }}</span>
+          <select v-else v-model="inputPriority">
+            <option
+              v-for="priority in priorities"
+              :key="priority.id"
+              :value="priority.value"
+              :selected="priority.id == item.priority.id"
+            >
+              {{ priority.value }}
             </option>
           </select>
         </td>
