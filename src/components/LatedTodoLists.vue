@@ -1,18 +1,9 @@
 <script setup>
 import { computed, ref } from 'vue'
-import { statuses } from '../const/statuses'
-import { categories } from '../const/categories'
-import { priorities } from '../const/priorities'
 
 const items = ref(JSON.parse(localStorage.getItem('items')) || [])
 
 let latedTasks = ref([])
-let inputContent = ref()
-let inputLimit = ref()
-let inputState = ref()
-let inputCategory = ref()
-let inputPriority = ref()
-let inputMemo = ref()
 let isToday = ref()
 
 latedTasks.value = items.value.slice(-5).reverse()
@@ -37,6 +28,8 @@ ifToday()
 </script>
 
 <template>
+  <h2 v-if="latedTasks.length">最近追加したタスク（直近5件）</h2>
+
   <div v-if="latedTasks.length" class="table_wrap">
     <table>
       <tr class="table_head">
@@ -57,73 +50,23 @@ ifToday()
       </tr>
       <tr v-for="item in latedTasks" :key="item.id">
         <td>
-          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.content }}</span>
-          <input v-model="inputContent" v-else type="text" />
+          <span>{{ item.content }}</span>
         </td>
         <td class="limit-value">
-          <span
-            :class="{ red: item.limit === today }"
-            v-if="!item.onEdit"
-            @click="onEdit(item.id)"
-            >{{ item.limit }}</span
-          >
+          <span :class="{ red: item.limit === today }">{{ item.limit }}</span>
           <!-- :class='{"クラス名", 条件} -->
-          <div v-else>
-            <VueDatePicker
-              showIcon
-              v-model="inputLimit"
-              format="yyyy/MM/dd"
-              locale="ja"
-              model-type="yyyy-MM-dd"
-              week-start="0"
-              :enable-time-picker="false"
-              :day-class="getDayClass"
-              :minDate="new Date()"
-            />
-          </div>
         </td>
         <td>
-          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.state.value }}</span>
-          <select v-else v-model="inputState">
-            <option
-              v-for="state in statuses"
-              :key="state.id"
-              :value="state"
-              :selected="state.id == item.state.id"
-            >
-              {{ state.value }}
-            </option>
-          </select>
+          <span>{{ item.state.value }}</span>
         </td>
         <td>
-          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.category }}</span>
-          <select v-else v-model="inputCategory">
-            <option
-              v-for="category in categories"
-              :key="category.id"
-              :value="category.value"
-              :selected="category.id == item.category.id"
-            >
-              {{ category.value }}
-            </option>
-          </select>
+          <span>{{ item.category }}</span>
         </td>
         <td>
-          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.priority }}</span>
-          <select v-else v-model="inputPriority">
-            <option
-              v-for="priority in priorities"
-              :key="priority.id"
-              :value="priority.value"
-              :selected="priority.id == item.priority.id"
-            >
-              {{ priority.value }}
-            </option>
-          </select>
+          <span>{{ item.priority }}</span>
         </td>
         <td>
-          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.memo }}</span>
-          <input v-else type="text" v-model="inputMemo" @change="onMemoChange($event)" />
+          <span>{{ item.memo }}</span>
         </td>
       </tr>
     </table>
@@ -136,6 +79,14 @@ ifToday()
 </template>
 
 <style scoped>
+h2 {
+  display: block;
+  font-weight: 600;
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: hsla(160, 100%, 37%, 1);
+}
 .tasklists {
   display: flex;
   justify-content: end;

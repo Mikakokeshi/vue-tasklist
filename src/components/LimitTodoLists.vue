@@ -1,21 +1,8 @@
 <script setup>
 import { computed, ref } from 'vue'
-import { statuses } from '../const/statuses'
-import { categories } from '../const/categories'
-import { priorities } from '../const/priorities'
 
-const items = ref(JSON.parse(localStorage.getItem('items')) || [])
-
-let limitTasks = ref([])
-let inputContent = ref()
-let inputLimit = ref()
-let inputState = ref()
-let inputCategory = ref()
-let inputPriority = ref()
-let inputMemo = ref()
+let todaysTasks = ref([])
 let isToday = ref()
-
-limitTasks.value = items.value.slice(-3).reverse()
 
 // 今日かどうか判定
 const today = new Date()
@@ -26,18 +13,24 @@ const today = new Date()
   })
   .replaceAll('/', '-')
 
-function ifToday() {
-  isToday.value = limitTasks.value.find((item) => item.limit === today)
+const items = ref(JSON.parse(localStorage.getItem('items')) || [])
 
+todaysTasks.value = items.value.filter((item) => item.limit === today)
+console.log(todaysTasks.value)
+
+function ifToday() {
+  isToday.value = todaysTasks.value.find((item) => item.limit === today)
   if ((isToday.value = today)) {
     return isToday.value == true
   }
+  return isToday.value
 }
 ifToday()
 </script>
 
 <template>
-  <div v-if="limitTasks.length" class="table_wrap">
+  <h2>本日までのタスク</h2>
+  <div v-if="todaysTasks.length" class="table_wrap">
     <table>
       <tr class="table_head">
         <th>タスク</th>
@@ -55,79 +48,30 @@ ifToday()
         </th>
         <th>メモ</th>
       </tr>
-      <tr v-for="item in limitTasks" :key="item.id">
+      <tr v-for="item in todaysTasks" :key="item.id">
         <td>
-          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.content }}</span>
-          <input v-model="inputContent" v-else type="text" />
+          <span>{{ item.content }}</span>
         </td>
         <td class="limit-value">
-          <span
-            :class="{ red: item.limit === today }"
-            v-if="!item.onEdit"
-            @click="onEdit(item.id)"
-            >{{ item.limit }}</span
-          >
+          <span :class="{ red: item.limit === today }">{{ item.limit }}</span>
           <!-- :class='{"クラス名", 条件} -->
-          <div v-else>
-            <VueDatePicker
-              showIcon
-              v-model="inputLimit"
-              format="yyyy/MM/dd"
-              locale="ja"
-              model-type="yyyy-MM-dd"
-              week-start="0"
-              :enable-time-picker="false"
-              :day-class="getDayClass"
-              :minDate="new Date()"
-            />
-          </div>
         </td>
         <td>
-          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.state.value }}</span>
-          <select v-else v-model="inputState">
-            <option
-              v-for="state in statuses"
-              :key="state.id"
-              :value="state"
-              :selected="state.id == item.state.id"
-            >
-              {{ state.value }}
-            </option>
-          </select>
+          <span>{{ item.state.value }}</span>
         </td>
         <td>
-          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.category }}</span>
-          <select v-else v-model="inputCategory">
-            <option
-              v-for="category in categories"
-              :key="category.id"
-              :value="category.value"
-              :selected="category.id == item.category.id"
-            >
-              {{ category.value }}
-            </option>
-          </select>
+          <span>{{ item.category }}</span>
         </td>
         <td>
-          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.priority }}</span>
-          <select v-else v-model="inputPriority">
-            <option
-              v-for="priority in priorities"
-              :key="priority.id"
-              :value="priority.value"
-              :selected="priority.id == item.priority.id"
-            >
-              {{ priority.value }}
-            </option>
-          </select>
+          <span>{{ item.priority }}</span>
         </td>
         <td>
-          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.memo }}</span>
-          <input v-else type="text" v-model="inputMemo" @change="onMemoChange($event)" />
+          <span>{{ item.memo }}</span>
         </td>
       </tr>
     </table>
   </div>
+  <p v-else class="text-center">本日までのタスクはありません。</p>
   <div class="tasklists">
     <router-link to="/tasklists"
       >タスク一覧を見る<v-icon>mdi-arrow-right-bold-circle-outline</v-icon></router-link

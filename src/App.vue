@@ -45,8 +45,6 @@ export default {
 
       <v-app-bar-title> Vue.js タスク管理APP </v-app-bar-title>
       <v-spacer></v-spacer>
-
-      <v-btn icon="mdi-dots-vertical" variant="text"></v-btn>
     </v-app-bar>
 
     <v-navigation-drawer

@@ -5,15 +5,15 @@ import ChartCategory from '../components/ChartCategory.vue'
 </script>
 
 <template>
-  <h1>Vue.js タスク管理APP</h1>
+  <h1>ダッシュボード</h1>
   <LimitTodoLists />
   <div class="piechart-col2">
     <div class="piechart-wrap">
-      <h2>ステータスの割合</h2>
+      <h2>ステータス比率</h2>
       <ChartStatus />
     </div>
     <div class="piechart-wrap">
-      <h2>カテゴリの割合</h2>
+      <h2>カテゴリ比率</h2>
       <ChartCategory />
     </div>
   </div>
