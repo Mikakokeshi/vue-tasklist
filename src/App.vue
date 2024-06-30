@@ -1,10 +1,68 @@
+<script>
+export default {
+  data: () => ({
+    drawer: false,
+    group: null,
+    items: [
+      {
+        title: 'ダッシュボード',
+        url: '/',
+        icon: 'mdi-view-dashboard'
+      },
+      {
+        title: 'タスク登録',
+        url: '/inputtask',
+        icon: 'mdi-pencil-plus'
+      },
+      {
+        title: 'タスク一覧',
+        url: '/tasklists',
+        icon: 'mdi-view-list-outline'
+      },
+      {
+        title: 'カレンダー',
+        url: '/calendar',
+        icon: 'mdi-calendar-badge'
+      }
+    ]
+  }),
+
+  watch: {
+    group() {
+      this.drawer = false
+    }
+  }
+}
+</script>
+
 <template>
   <main>
-    <router-link to="/">Home</router-link> | <router-link to="/inputtask">タスク登録</router-link> |
-    <router-link to="/tasklists">タスク一覧</router-link> |
-    <router-link to="/calendar">カレンダー</router-link> |
     <router-view></router-view>
   </main>
+  <v-layout>
+    <v-app-bar color="secondary" prominent>
+      <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+
+      <v-app-bar-title> Vue.js タスク管理APP </v-app-bar-title>
+      <v-spacer></v-spacer>
+
+      <v-btn icon="mdi-dots-vertical" variant="text"></v-btn>
+    </v-app-bar>
+
+    <v-navigation-drawer
+      v-model="drawer"
+      :location="$vuetify.display.mobile ? 'left' : undefined"
+      temporary
+    >
+      <v-list nav>
+        <v-list-item v-for="item in items" :key="item.title" :prepend-icon="item.icon"
+          ><router-link :color="item.color" :to="item.url">{{
+            item.title
+          }}</router-link></v-list-item
+        >
+      </v-list>
+    </v-navigation-drawer>
+  </v-layout>
 </template>
 
 <style>
@@ -18,6 +76,11 @@ h1 {
 }
 main {
   width: 860px;
+  margin-top: 60px;
+  position: relative;
+}
+.v-list-item__content a {
+  font-weight: 600;
 }
 @media screen and (max-width: 678px) {
   main {
