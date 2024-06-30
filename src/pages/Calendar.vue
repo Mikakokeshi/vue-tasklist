@@ -27,7 +27,15 @@ export default {
   },
   methods: {
     handleEventClick: function (e) {
-      alert('イベント ' + '「' + e.event.title + '」' + 'です')
+      console.log(e)
+      const selectedDate = e.event.start
+        .toLocaleDateString('ja-JP', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        })
+        .replaceAll('/', '-')
+      alert('タスク： ' + '「' + e.event.title + '」' + ' 期限：' + selectedDate)
     }
   }
 }
