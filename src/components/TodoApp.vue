@@ -1,7 +1,7 @@
 <script setup>
 import TodoInput from './TodoInput.vue'
 import TodoLists from './TodoLists.vue'
-import Chart from './Chart'
+import Chart from './Chart.vue'
 </script>
 
 <template>
@@ -10,10 +10,3 @@ import Chart from './Chart'
   <TodoLists />
   <Chart />
 </template>
-
-<style scoped>
-h1 {
-  font-size: 20px;
-  font-weight: bold;
-}
-</style>
