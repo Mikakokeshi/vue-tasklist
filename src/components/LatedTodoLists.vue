@@ -6,22 +6,16 @@ import { priorities } from '../const/priorities'
 
 const items = ref(JSON.parse(localStorage.getItem('items')) || [])
 
-let lastThreeTasks = ref([])
+let latedTasks = ref([])
 let inputContent = ref()
 let inputLimit = ref()
 let inputState = ref()
 let inputCategory = ref()
 let inputPriority = ref()
 let inputMemo = ref()
-let deleteItemId = ref()
-let isShowModal = ref(false)
 let isToday = ref()
-let isSortAscendingStatus = ref(false)
-let isSortAscendingLimit = ref(false)
-let isSortAscendingCategory = ref(false)
-let isSortAscendingPriority = ref(false)
 
-lastThreeTasks.value = items.value.slice(-3).reverse()
+latedTasks.value = items.value.slice(-5).reverse()
 
 // 今日かどうか判定
 const today = new Date()
@@ -33,7 +27,7 @@ const today = new Date()
   .replaceAll('/', '-')
 
 function ifToday() {
-  isToday.value = lastThreeTasks.value.find((item) => item.limit === today)
+  isToday.value = latedTasks.value.find((item) => item.limit === today)
 
   if ((isToday.value = today)) {
     return isToday.value == true
@@ -43,8 +37,7 @@ ifToday()
 </script>
 
 <template>
-  <div v-if="lastThreeTasks.length" class="table_wrap">
-    <h2>最新のタスク</h2>
+  <div v-if="latedTasks.length" class="table_wrap">
     <table>
       <tr class="table_head">
         <th>タスク</th>
@@ -62,7 +55,7 @@ ifToday()
         </th>
         <th>メモ</th>
       </tr>
-      <tr v-for="item in lastThreeTasks" :key="item.id">
+      <tr v-for="item in latedTasks" :key="item.id">
         <td>
           <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.content }}</span>
           <input v-model="inputContent" v-else type="text" />
@@ -143,14 +136,6 @@ ifToday()
 </template>
 
 <style scoped>
-h2 {
-  display: block;
-  font-weight: 600;
-  font-size: 18px;
-  text-align: center;
-  margin-bottom: 20px;
-  color: hsla(160, 100%, 37%, 1);
-}
 .tasklists {
   display: flex;
   justify-content: end;
