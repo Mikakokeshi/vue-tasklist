@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     handleEventClick: function (e) {
-      alert('イベント ' + e.event.title + 'です')
+      alert('イベント ' + '「' + e.event.title + '」' + 'です')
     }
   }
 }
