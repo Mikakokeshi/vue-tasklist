@@ -58,7 +58,7 @@ const getDayClass = (date) => {
 </script>
 
 <template>
-  <p v-if="errMsg" class="error">Todoと期限どちらも入力してください</p>
+  <p v-if="errMsg" class="error">タスクと期限どちらも入力してください</p>
 
   <form @submit="handleSubmit">
     <div class="form-wrap">

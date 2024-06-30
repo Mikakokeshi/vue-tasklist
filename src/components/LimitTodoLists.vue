@@ -86,6 +86,7 @@ h2 {
   font-size: 18px;
   text-align: center;
   margin-bottom: 20px;
+  margin-top: 30px;
   color: hsla(160, 100%, 37%, 1);
 }
 .tasklists {
@@ -182,7 +183,7 @@ select {
   }
   .table_wrap table {
     border-collapse: collapse;
-    min-width: 700px;
+    min-width: 600px;
   }
   .limit {
     width: 165px;

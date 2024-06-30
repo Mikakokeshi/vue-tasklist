@@ -1,12 +1,8 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
-const items = ref(JSON.parse(localStorage.getItem('items')) || [])
-
-let latedTasks = ref([])
+let weekTasks = ref([])
 let isToday = ref()
-
-latedTasks.value = items.value.slice(-5).reverse()
 
 // 今日かどうか判定
 const today = new Date()
@@ -17,20 +13,26 @@ const today = new Date()
   })
   .replaceAll('/', '-')
 
-function ifToday() {
-  isToday.value = latedTasks.value.find((item) => item.limit === today)
+const items = ref(JSON.parse(localStorage.getItem('items')) || [])
 
+function ifToday() {
+  isToday.value = items.value.find((item) => item.limit === today)
   if ((isToday.value = today)) {
     return isToday.value == true
   }
+  return isToday.value
 }
 ifToday()
+
+weekTasks.value = items.value.filter((item) =>
+  Math.ceil((new Date(item.limit) - new Date()) / (1000 * 60 * 60 * 24) <= 7)
+)
+console.log(weekTasks.value)
 </script>
 
 <template>
-  <h2 v-if="latedTasks.length">最近追加したタスク（直近5件）</h2>
-
-  <div v-if="latedTasks.length" class="table_wrap">
+  <h2>1週間以内のタスク</h2>
+  <div v-if="weekTasks.length" class="table_wrap">
     <table>
       <tr class="table_head">
         <th>タスク</th>
@@ -48,7 +50,7 @@ ifToday()
         </th>
         <th>メモ</th>
       </tr>
-      <tr v-for="item in latedTasks" :key="item.id">
+      <tr v-for="item in weekTasks" :key="item.id">
         <td>
           <span>{{ item.content }}</span>
         </td>
@@ -71,6 +73,7 @@ ifToday()
       </tr>
     </table>
   </div>
+  <p v-else class="text-center">本日までのタスクはありません。</p>
   <div class="tasklists">
     <router-link to="/tasklists"
       >タスク一覧を見る<v-icon>mdi-arrow-right-bold-circle-outline</v-icon></router-link
@@ -182,7 +185,7 @@ select {
   }
   .table_wrap table {
     border-collapse: collapse;
-    min-width: 700px;
+    min-width: 600px;
   }
   .limit {
     width: 165px;

@@ -414,13 +414,13 @@ table .table_head .sort_wrap {
   font-weight: bold;
 }
 .status {
-  width: 210px;
+  width: 150px;
 }
 .category {
-  width: 180px;
+  width: 160px;
 }
 .priority {
-  width: 140px;
+  width: 130px;
 }
 .sort {
   padding-left: 5px;
@@ -472,7 +472,7 @@ table th {
   display: table-cell;
   font-size: 12px;
   font-weight: bold;
-  padding: 0 16px;
+  padding: 0 4px;
   height: 52px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
@@ -480,7 +480,7 @@ table td {
   display: table-cell;
   height: 52px;
   width: 120px;
-  padding: 0 16px;
+  padding: 0 4px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
@@ -504,7 +504,7 @@ table td {
     min-width: 940px;
   }
   .limit {
-    width: 165px;
+    width: 135px;
   }
 }
 </style>

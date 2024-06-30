@@ -1,5 +1,6 @@
 <script setup>
 import LimitTodoLists from '../components/LimitTodoLists.vue'
+import LimitWeekLists from '../components/LimitWeekLists.vue'
 import ChartStatus from '../components/ChartStatus.vue'
 import ChartCategory from '../components/ChartCategory.vue'
 </script>
@@ -7,6 +8,7 @@ import ChartCategory from '../components/ChartCategory.vue'
 <template>
   <h1>ダッシュボード</h1>
   <LimitTodoLists />
+  <LimitWeekLists />
   <div class="piechart-col2">
     <div class="piechart-wrap">
       <h2>ステータス比率</h2>
@@ -24,6 +26,7 @@ h2 {
   font-size: 16px;
   text-align: center;
   font-weight: 600;
+  margin-top: 30px;
 }
 .piechart-col2 {
   margin-top: 40px;
