@@ -7,7 +7,6 @@ import { computed, ref } from 'vue'
 ChartJS.register(ArcElement, Tooltip, Legend)
 
 export default {
-  name: 'TodoApp',
   components: {
     Pie
   },

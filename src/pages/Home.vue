@@ -1,9 +1,44 @@
 <script setup>
-import TodoApp from '../components/TodoApp.vue'
+import LimitTodoLists from '../components/LimitTodoLists.vue'
+import ChartStatus from '../components/ChartStatus.vue'
+import ChartCategory from '../components/ChartCategory.vue'
 </script>
 
 <template>
-  <div>
-    <TodoApp />
+  <h1>Vue.js タスク管理APP</h1>
+  <LimitTodoLists />
+  <div class="piechart-col2">
+    <div class="piechart-wrap">
+      <h2>ステータスの割合</h2>
+      <ChartStatus />
+    </div>
+    <div class="piechart-wrap">
+      <h2>カテゴリの割合</h2>
+      <ChartCategory />
+    </div>
   </div>
 </template>
+
+<style scoped>
+h2 {
+  font-size: 16px;
+  text-align: center;
+  font-weight: 600;
+}
+.piechart-col2 {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.piechart-wrap {
+  flex: 1;
+  width: 100%;
+}
+@media screen and (max-width: 678px) {
+  .piechart-col2 {
+    flex-direction: column;
+  }
+}
+</style>
