@@ -18,4 +18,12 @@ h1 {
   font-weight: bold;
   margin: 20px 0 40px;
 }
+main {
+  width: 860px;
+}
+@media screen and (max-width: 678px) {
+  main {
+    width: 100%;
+  }
+}
 </style>
