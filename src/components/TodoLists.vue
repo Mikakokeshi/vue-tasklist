@@ -267,7 +267,7 @@ function toggleSortPriority() {
           <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.content }}</span>
           <input v-model="inputContent" v-else type="text" />
         </td>
-        <td>
+        <td class="limit-value">
           <span
             :class="{ red: item.limit === today }"
             v-if="!item.onEdit"
@@ -436,6 +436,10 @@ select {
   border-radius: 5px;
 }
 
+.limit {
+  width: 135px;
+}
+
 .red {
   color: red;
   font-weight: bold;
@@ -446,6 +450,10 @@ select {
   margin: auto;
 }
 
+.limit-value .red {
+  width: 120px;
+}
+
 @media screen and (max-width: 678px) {
   .table_wrap {
     overflow-x: scroll;
@@ -454,6 +462,9 @@ select {
   .table_wrap table {
     border-collapse: collapse;
     min-width: 700px;
+  }
+  .limit {
+    width: 165px;
   }
 }
 </style>
