@@ -34,6 +34,5 @@ export default {
 </script>
 <template>
   <h1>カレンダー</h1>
-
   <FullCalendar :options="calendarOptions" />
 </template>

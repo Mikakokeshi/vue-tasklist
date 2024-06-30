@@ -46,7 +46,6 @@ function onEdit(id) {
     return
   }
 }
-console.log(items)
 
 function onUpdate(id) {
   console.log(id)
@@ -196,6 +195,9 @@ function toggleSortPriority() {
   isSortAscendingPriority.value = !isSortAscendingPriority.value // Toggle sorting direction
   sortState()
 }
+
+console.log(items.value)
+console.log(items.value.slice(-5).reverse())
 </script>
 
 <template>
@@ -334,13 +336,15 @@ function toggleSortPriority() {
         </td>
         <td class="button">
           <button v-if="!item.onEdit" @click="onEdit(item.id)">
-            <v-icon>mdi-pencil</v-icon>
+            <v-icon color="blue">mdi-pencil</v-icon>
           </button>
-          <button v-else @click="onUpdate(item.id)"><v-icon>mdi-check</v-icon></button>
+          <button v-else @click="onUpdate(item.id)">
+            <v-icon color="green">mdi-check</v-icon>
+          </button>
         </td>
         <td class="button">
           <button @click="showDeleteModal(item.id, item.content)">
-            <v-icon>mdi-delete</v-icon>
+            <v-icon color="red">mdi-delete</v-icon>
           </button>
         </td>
         <!-- 削除モーダル -->
@@ -470,6 +474,9 @@ select {
 </style>
 
 <style>
+.table_head {
+  background-color: hsla(160, 100%, 45%, 1);
+}
 .table_wrap .dp__pointer {
   font-size: 12px !important;
   border: 1px solid rgb(118, 118, 118) !important;
