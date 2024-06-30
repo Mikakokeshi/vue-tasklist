@@ -1,9 +1,8 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { statuses } from '../const/statuses'
 import { categories } from '../const/categories'
 import { priorities } from '../const/priorities'
-import { Pie } from 'vue-chartjs'
 
 const items = ref(JSON.parse(localStorage.getItem('items')) || [])
 
@@ -17,9 +16,6 @@ let deleteItemId = ref()
 let isEditting = ref(false)
 let isShowModal = ref(false)
 let isToday = ref()
-let notStartLength = ref()
-let doingLength = ref()
-let completedLength = ref()
 let isSortAscendingStatus = ref(false)
 let isSortAscendingLimit = ref(false)
 let isSortAscendingCategory = ref(false)
@@ -102,25 +98,6 @@ function onMemoChange(event) {
   inputMemo.value = event.target.value
 }
 
-//各ステータス数取得
-notStartLength.value = items.value.filter((item) => item.state.value === '未着手').length
-doingLength.value = items.value.filter((item) => item.state.value === '進行中').length
-completedLength.value = items.value.filter((item) => item.state.value === '完了').length
-
-// ステータスごとに件数をカウント
-const chartData = computed(() => {
-  return {
-    labels: ['未着手', '進行中', '完了'],
-    datasets: [
-      {
-        backgroundColor: ['#e76a6a', '#fbdb94', '#41B883'],
-        data: [notStartLength.value, doingLength.value, completedLength.value]
-      }
-    ]
-  }
-})
-// console.log(item.state)
-
 // 今日かどうか判定
 const today = new Date()
   .toLocaleDateString('ja-JP', {
@@ -132,7 +109,6 @@ const today = new Date()
 
 function ifToday() {
   isToday.value = items.value.find((item) => item.limit === today)
-  // console.log(today, isToday.value.limit)
 
   if ((isToday.value = today)) {
     return isToday.value == true
@@ -378,9 +354,6 @@ function toggleSortPriority() {
       </tr>
     </table>
   </div>
-  <div v-if="items.length" class="piechart">
-    <Pie :data="chartData" :options="options" />
-  </div>
 </template>
 
 <style scoped>
@@ -445,12 +418,8 @@ table td {
 table .button {
   width: 30px;
 }
-
-table .limit {
-  width: 180px;
-}
 table .memo {
-  width: 220px;
+  width: 180px;
 }
 
 table .button button {
@@ -466,13 +435,15 @@ select {
   border: 1px solid rgb(118, 118, 118);
   border-radius: 5px;
 }
-.piechart {
-  width: 50%;
-  margin: 20px auto;
-}
+
 .red {
   color: red;
   font-weight: bold;
+  border: 1px solid red;
+  border-radius: 70px;
+  justify-items: center;
+  line-height: 1;
+  margin: auto;
 }
 
 @media screen and (max-width: 678px) {
@@ -483,10 +454,6 @@ select {
   .table_wrap table {
     border-collapse: collapse;
     min-width: 700px;
-  }
-  .piechart {
-    width: 100%;
-    margin: 40px auto;
   }
 }
 </style>
