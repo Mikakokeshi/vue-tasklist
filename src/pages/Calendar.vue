@@ -36,3 +36,12 @@ export default {
   <h1>カレンダー</h1>
   <FullCalendar :options="calendarOptions" />
 </template>
+
+<style>
+@media screen and (max-width: 678px) {
+  .fc-dayGridMonth-view table td {
+    height: initial;
+    width: initial;
+  }
+}
+</style>

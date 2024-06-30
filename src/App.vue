@@ -43,7 +43,7 @@ export default {
     <v-app-bar color="secondary" prominent>
       <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-app-bar-title> Vue.js タスク管理APP </v-app-bar-title>
+      <v-app-bar-title> <router-link to="/">Vue.js タスク管理APP </router-link></v-app-bar-title>
       <v-spacer></v-spacer>
     </v-app-bar>
 
@@ -77,6 +77,10 @@ main {
   margin-top: 60px;
   position: relative;
 }
+.v-app-bar-title a {
+  color: #fff;
+}
+.v-app-bar-title,
 .v-list-item__content a {
   font-weight: 600;
 }
