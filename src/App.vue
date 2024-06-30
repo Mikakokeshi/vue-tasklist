@@ -1,5 +1,3 @@
-<script setup></script>
-
 <template>
   <main>
     <router-link to="/">Home</router-link> | <router-link to="/inputtask">タスク登録</router-link> |

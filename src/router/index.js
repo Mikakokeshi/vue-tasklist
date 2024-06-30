@@ -1,19 +1,19 @@
-import { createMemoryHistory, createRouter } from 'vue-router'
+import { createWebHistory, createRouter } from 'vue-router'
 
+import Home from '../pages/Home.vue'
 import Calendar from '../pages/Calendar.vue'
 import TaskLists from '../pages/TaskLists.vue'
 import InputTask from '../pages/InputTask.vue'
-import Home from '../pages/Home.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
-  { path: '/tasklists', name: 'タスク一覧', component: TaskLists },
-  { path: '/inputtask', name: 'タスク登録', component: InputTask },
-  { path: '/calendar', name: 'カレンダー', component: Calendar }
+  { path: '/inputtask', name: 'InputTask', component: InputTask },
+  { path: '/tasklists', name: 'TaskLists', component: TaskLists },
+  { path: '/calendar', name: 'Calendar', component: Calendar }
 ]
 
 const router = createRouter({
-  history: createMemoryHistory(),
+  history: createWebHistory(),
   routes
 })
 
