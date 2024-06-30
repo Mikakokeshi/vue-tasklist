@@ -203,159 +203,163 @@ console.log(items.value.slice(-5).reverse())
 <template>
   <div v-if="items.length" class="table_wrap">
     <table>
-      <tr class="table_head">
-        <th></th>
-        <th>タスク</th>
-        <th class="limit">
-          <div class="sort_wrap">
-            期限
-            <div class="sort">
-              <button v-if="!isSortAscendingLimit" @click="toggleSortLimit()">
-                <v-icon>mdi-sort-ascending</v-icon>
-              </button>
-              <button v-else @click="toggleSortLimit()">
-                <v-icon>mdi-sort-descending</v-icon>
-              </button>
+      <thead>
+        <tr class="table_head">
+          <th></th>
+          <th>タスク</th>
+          <th class="limit">
+            <div class="sort_wrap">
+              期限
+              <div class="sort">
+                <button v-if="!isSortAscendingLimit" @click="toggleSortLimit()">
+                  <v-icon>mdi-sort-ascending</v-icon>
+                </button>
+                <button v-else @click="toggleSortLimit()">
+                  <v-icon>mdi-sort-descending</v-icon>
+                </button>
+              </div>
             </div>
-          </div>
-        </th>
-        <th class="">
-          <div class="sort_wrap">
-            ステータス
-            <div class="sort">
-              <button v-if="!isSortAscendingStatus" @click="toggleSortStatus()">
-                <v-icon>mdi-sort-ascending</v-icon>
-              </button>
-              <button v-else @click="toggleSortStatus()">
-                <v-icon>mdi-sort-descending</v-icon>
-              </button>
+          </th>
+          <th class="status">
+            <div class="sort_wrap">
+              ステータス
+              <div class="sort">
+                <button v-if="!isSortAscendingStatus" @click="toggleSortStatus()">
+                  <v-icon>mdi-sort-ascending</v-icon>
+                </button>
+                <button v-else @click="toggleSortStatus()">
+                  <v-icon>mdi-sort-descending</v-icon>
+                </button>
+              </div>
             </div>
-          </div>
-        </th>
-        <th>
-          <div class="sort_wrap">
-            カテゴリ
-            <div class="sort">
-              <button v-if="!isSortAscendingCategory" @click="toggleSortCategory()">
-                <v-icon>mdi-sort-ascending</v-icon>
-              </button>
-              <button v-else @click="toggleSortCategory()">
-                <v-icon>mdi-sort-descending</v-icon>
-              </button>
+          </th>
+          <th class="category">
+            <div class="sort_wrap">
+              カテゴリ
+              <div class="sort">
+                <button v-if="!isSortAscendingCategory" @click="toggleSortCategory()">
+                  <v-icon>mdi-sort-ascending</v-icon>
+                </button>
+                <button v-else @click="toggleSortCategory()">
+                  <v-icon>mdi-sort-descending</v-icon>
+                </button>
+              </div>
             </div>
-          </div>
-        </th>
-        <th>
-          <div class="sort_wrap">
-            重要度
-            <div class="sort">
-              <button v-if="!isSortAscendingPriority" @click="toggleSortPriority()">
-                <v-icon>mdi-sort-ascending</v-icon>
-              </button>
-              <button v-else @click="toggleSortPriority()">
-                <v-icon>mdi-sort-descending</v-icon>
-              </button>
+          </th>
+          <th class="priority">
+            <div class="sort_wrap">
+              重要度
+              <div class="sort">
+                <button v-if="!isSortAscendingPriority" @click="toggleSortPriority()">
+                  <v-icon>mdi-sort-ascending</v-icon>
+                </button>
+                <button v-else @click="toggleSortPriority()">
+                  <v-icon>mdi-sort-descending</v-icon>
+                </button>
+              </div>
             </div>
-          </div>
-        </th>
-        <th class="memo">メモ</th>
-        <th></th>
-        <th></th>
-      </tr>
-      <tr v-for="item in items" :key="item.id">
-        <th>{{ item.id + 1 }}</th>
+          </th>
+          <th class="memo">メモ</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in items" :key="item.id">
+          <th>{{ item.id + 1 }}</th>
 
-        <td>
-          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.content }}</span>
-          <input v-model="inputContent" v-else type="text" />
-        </td>
-        <td class="limit-value">
-          <span
-            :class="{ red: item.limit === today }"
-            v-if="!item.onEdit"
-            @click="onEdit(item.id)"
-            >{{ item.limit }}</span
-          >
-          <!-- :class='{"クラス名", 条件} -->
-          <div v-else>
-            <VueDatePicker
-              showIcon
-              v-model="inputLimit"
-              format="yyyy/MM/dd"
-              locale="ja"
-              model-type="yyyy-MM-dd"
-              week-start="0"
-              :enable-time-picker="false"
-              :day-class="getDayClass"
-              :minDate="new Date()"
-            />
-          </div>
-        </td>
-        <td>
-          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.state.value }}</span>
-          <select v-else v-model="inputState">
-            <option
-              v-for="state in statuses"
-              :key="state.id"
-              :value="state"
-              :selected="state.id == item.state.id"
+          <td>
+            <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.content }}</span>
+            <input v-model="inputContent" v-else type="text" />
+          </td>
+          <td class="limit-value">
+            <span
+              :class="{ red: item.limit === today }"
+              v-if="!item.onEdit"
+              @click="onEdit(item.id)"
+              >{{ item.limit }}</span
             >
-              {{ state.value }}
-            </option>
-          </select>
-        </td>
-        <td>
-          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.category }}</span>
-          <select v-else v-model="inputCategory">
-            <option
-              v-for="category in categories"
-              :key="category.id"
-              :value="category.value"
-              :selected="category.id == item.category.id"
-            >
-              {{ category.value }}
-            </option>
-          </select>
-        </td>
-        <td>
-          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.priority }}</span>
-          <select v-else v-model="inputPriority">
-            <option
-              v-for="priority in priorities"
-              :key="priority.id"
-              :value="priority.value"
-              :selected="priority.id == item.priority.id"
-            >
-              {{ priority.value }}
-            </option>
-          </select>
-        </td>
-        <td>
-          <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.memo }}</span>
-          <input v-else type="text" v-model="inputMemo" @change="onMemoChange($event)" />
-        </td>
-        <td class="button">
-          <button v-if="!item.onEdit" @click="onEdit(item.id)">
-            <v-icon color="blue">mdi-pencil</v-icon>
-          </button>
-          <button v-else @click="onUpdate(item.id)">
-            <v-icon color="green">mdi-check</v-icon>
-          </button>
-        </td>
-        <td class="button">
-          <button @click="showDeleteModal(item.id, item.content)">
-            <v-icon color="red">mdi-delete</v-icon>
-          </button>
-        </td>
-        <!-- 削除モーダル -->
-        <td v-if="isShowModal" class="modal">
-          <div class="modal-content">
-            <p>{{ ` タスク: 「${inputContent}」 ` }}本当に削除しますか？</p>
-            <v-btn class="modal-button" @click="onDelete(deleteItemId)"> はい </v-btn>
-            <v-btn class="modal-button" @click="closeDeleteModal">いいえ</v-btn>
-          </div>
-        </td>
-      </tr>
+            <!-- :class='{"クラス名", 条件} -->
+            <div v-else>
+              <VueDatePicker
+                showIcon
+                v-model="inputLimit"
+                format="yyyy/MM/dd"
+                locale="ja"
+                model-type="yyyy-MM-dd"
+                week-start="0"
+                :enable-time-picker="false"
+                :day-class="getDayClass"
+                :minDate="new Date()"
+              />
+            </div>
+          </td>
+          <td>
+            <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.state.value }}</span>
+            <select v-else v-model="inputState">
+              <option
+                v-for="state in statuses"
+                :key="state.id"
+                :value="state"
+                :selected="state.id == item.state.id"
+              >
+                {{ state.value }}
+              </option>
+            </select>
+          </td>
+          <td>
+            <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.category }}</span>
+            <select v-else v-model="inputCategory">
+              <option
+                v-for="category in categories"
+                :key="category.id"
+                :value="category.value"
+                :selected="category.id == item.category.id"
+              >
+                {{ category.value }}
+              </option>
+            </select>
+          </td>
+          <td>
+            <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.priority }}</span>
+            <select v-else v-model="inputPriority">
+              <option
+                v-for="priority in priorities"
+                :key="priority.id"
+                :value="priority.value"
+                :selected="priority.id == item.priority.id"
+              >
+                {{ priority.value }}
+              </option>
+            </select>
+          </td>
+          <td>
+            <span v-if="!item.onEdit" @click="onEdit(item.id)">{{ item.memo }}</span>
+            <input v-else type="text" v-model="inputMemo" @change="onMemoChange($event)" />
+          </td>
+          <td class="button">
+            <button v-if="!item.onEdit" @click="onEdit(item.id)">
+              <v-icon color="blue">mdi-pencil</v-icon>
+            </button>
+            <button v-else @click="onUpdate(item.id)">
+              <v-icon color="green">mdi-check</v-icon>
+            </button>
+          </td>
+          <td class="button">
+            <button @click="showDeleteModal(item.id, item.content)">
+              <v-icon color="red">mdi-delete</v-icon>
+            </button>
+          </td>
+          <!-- 削除モーダル -->
+          <td v-if="isShowModal" class="modal">
+            <div class="modal-content">
+              <p>{{ ` タスク: 「${inputContent}」 ` }}本当に削除しますか？</p>
+              <v-btn class="modal-button" @click="onDelete(deleteItemId)"> はい </v-btn>
+              <v-btn class="modal-button" @click="closeDeleteModal">いいえ</v-btn>
+            </div>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </template>
@@ -409,16 +413,19 @@ table .table_head .sort_wrap {
   justify-content: center;
   font-weight: bold;
 }
+.status {
+  width: 210px;
+}
+.category {
+  width: 180px;
+}
+.priority {
+  width: 140px;
+}
 .sort {
   padding-left: 5px;
 }
-table th {
-  font-size: 12px;
-  font-weight: bold;
-}
-table td {
-  width: 120px;
-}
+
 table .button {
   width: 30px;
 }
@@ -440,7 +447,7 @@ select {
   border-radius: 5px;
 }
 
-.limit {
+.limit .sort_wrap {
   width: 135px;
 }
 
@@ -456,27 +463,27 @@ select {
 
 .limit-value .red {
   width: 120px;
-}
-
-@media screen and (max-width: 678px) {
-  .table_wrap {
-    overflow-x: scroll;
-    overflow-y: visible;
-  }
-  .table_wrap table {
-    border-collapse: collapse;
-    min-width: 700px;
-  }
-  .limit {
-    width: 165px;
-  }
+  text-align: center;
 }
 </style>
 
 <style>
-.table_head {
-  background-color: hsla(160, 100%, 45%, 1);
+table th {
+  display: table-cell;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0 16px;
+  height: 52px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
+table td {
+  display: table-cell;
+  height: 52px;
+  width: 120px;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
 .table_wrap .dp__pointer {
   font-size: 12px !important;
   border: 1px solid rgb(118, 118, 118) !important;
@@ -485,5 +492,19 @@ select {
 .dp__menu {
   position: relative;
   z-index: 2;
+}
+@media screen and (max-width: 678px) {
+  .table_wrap,
+  .v-table {
+    overflow-x: scroll;
+    overflow-y: visible;
+  }
+  .table_wrap table {
+    border-collapse: collapse;
+    min-width: 940px;
+  }
+  .limit {
+    width: 165px;
+  }
 }
 </style>
