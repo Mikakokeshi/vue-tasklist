@@ -14,7 +14,8 @@ export default {
       calendarOptions: {
         plugins: [dayGridPlugin, interactionPlugin],
         initialView: 'dayGridMonth',
-        dateClick: this.handleDateClick,
+        eventClick: (e) => this.handleEventClick(e),
+        drgScroll: true,
 
         // itemsオブジェクトをループしてイベントを生成
         events: items.map((item) => ({
@@ -25,12 +26,14 @@ export default {
     }
   },
   methods: {
-    handleDateClick: function (arg) {
-      alert('date click! ' + arg.dateStr)
+    handleEventClick: function (e) {
+      alert('イベント ' + e.event.title + 'です')
     }
   }
 }
 </script>
 <template>
+  <h1>カレンダー</h1>
+
   <FullCalendar :options="calendarOptions" />
 </template>
