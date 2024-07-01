@@ -5,13 +5,14 @@
 レスポンシブ対応しているのでスマホからもご利用いただけます。
 
  <img width="1400" alt="スクリーンショット" src="./images/pc_dashboard.png">
- <img width="1400" alt="スクリーンショット" src="./images/pc_inputtask.png">
+<!--  <img width="1400" alt="スクリーンショット" src="./images/pc_inputtask.png">
  <img width="1400" alt="スクリーンショット" src="./images/pc_tasklist.png">
- <img width="1400" alt="スクリーンショット" src="./images/pc_calendar.png">
- <img　width="350" height="700"  alt="スクリーンショット" src="./images/sp_dashboard.png">
- <img　width="350" height="700"  alt="スクリーンショット" src="./images/sp_inputtask.png">
- <img　width="350" height="700"  alt="スクリーンショット" src="./images/sp_tasklist.png">
- <img　width="350" height="700"  alt="スクリーンショット" src="./images/sp_calendar.png">
+ <img width="1400" alt="スクリーンショット" src="./images/pc_calendar.png"> -->
+
+ <img width="350" text-align="center" alt="スクリーンショット" src="./images/sp_dashboard.png">
+<!--  <img width="350" alt="スクリーンショット" src="./images/sp_inputtask.png">
+ <img width="350" alt="スクリーンショット" src="./images/sp_tasklist.png">
+ <img width="350" alt="スクリーンショット" src="./images/sp_calendar.png"> -->
 
 # URL
 
