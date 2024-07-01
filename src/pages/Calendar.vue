@@ -35,7 +35,7 @@ export default {
           day: '2-digit'
         })
         .replaceAll('/', '-')
-      alert('タスク： ' + '「' + e.event.title + '」' + ' 期限：' + selectedDate)
+      alert('タスク： ' + e.event.title + ' 期限：' + selectedDate)
     }
   }
 }

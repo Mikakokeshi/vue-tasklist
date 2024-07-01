@@ -15,7 +15,7 @@ export default {
         icon: 'mdi-pencil-plus'
       },
       {
-        title: 'タスク一覧',
+        title: 'タスク一覧/編集',
         url: '/tasklists',
         icon: 'mdi-view-list-outline'
       },
