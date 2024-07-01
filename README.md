@@ -1,14 +1,16 @@
 # 概要
 
-タスク管理アプリです<br >
+タスク管理アプリです。<br >
 タスク登録後、ステータスのPieチャートやカレンダーに反映され、視覚的にタスク管理できます。 <br >
 レスポンシブ対応しているのでスマホからもご利用いただけます。
 
+## PC
  <img width="1400" alt="スクリーンショット" src="./images/pc_dashboard.png">
 <!--  <img width="1400" alt="スクリーンショット" src="./images/pc_inputtask.png">
  <img width="1400" alt="スクリーンショット" src="./images/pc_tasklist.png">
  <img width="1400" alt="スクリーンショット" src="./images/pc_calendar.png"> -->
 
+## SP
  <img width="350" text-align="center" alt="スクリーンショット" src="./images/sp_dashboard.png">
 <!--  <img width="350" alt="スクリーンショット" src="./images/sp_inputtask.png">
  <img width="350" alt="スクリーンショット" src="./images/sp_tasklist.png">
@@ -27,7 +29,7 @@ https://vue-tasklist-five.vercel.app/<br >
   - vuetify: ^3.6.10
 - fullcalendar
 
-## デプロイ
+# デプロイ
 
 - Vercel
 
@@ -36,3 +38,6 @@ https://vue-tasklist-five.vercel.app/<br >
 - 投稿/編集/削除 機能(localStorage)
 - カレンダー(fullcalendar)
 - カテゴリ/ステータスのPieチャート(charts.js)
+
+
+
