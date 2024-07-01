@@ -73,7 +73,7 @@ console.log(weekTasks.value)
       </tr>
     </table>
   </div>
-  <p v-else class="text-center">本日までのタスクはありません。</p>
+  <p v-else class="text-center">今週〆切のタスクはありません。</p>
   <div class="tasklists">
     <router-link to="/tasklists"
       >タスク一覧を見る<v-icon>mdi-arrow-right-bold-circle-outline</v-icon></router-link
