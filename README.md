@@ -1,4 +1,4 @@
-# The-View
+# 概要
 
 タスク管理アプリです<br >
 タスク登録後、ステータスのPieチャートやカレンダーに反映され、視覚的にタスク管理できます。 <br >
@@ -8,10 +8,10 @@
  <img width="1400" alt="スクリーンショット" src="./images/pc_inputtask.png">
  <img width="1400" alt="スクリーンショット" src="./images/pc_tasklist.png">
  <img width="1400" alt="スクリーンショット" src="./images/pc_calendar.png">
- <imgwidth="350" height="700"  alt="スクリーンショット" src="./images/sp_dashboard.png">
- <imgwidth="350" height="700"  alt="スクリーンショット" src="./images/sp_inputtask.png">
- <imgwidth="350" height="700"  alt="スクリーンショット" src="./images/sp_tasklist.png">
- <imgwidth="350" height="700"  alt="スクリーンショット" src="./images/sp_calendar.png">
+ <img　width="350" height="700"  alt="スクリーンショット" src="./images/sp_dashboard.png">
+ <img　width="350" height="700"  alt="スクリーンショット" src="./images/sp_inputtask.png">
+ <img　width="350" height="700"  alt="スクリーンショット" src="./images/sp_tasklist.png">
+ <img　width="350" height="700"  alt="スクリーンショット" src="./images/sp_calendar.png">
 
 # URL
 
