@@ -38,6 +38,6 @@ https://vue-tasklist-five.vercel.app/<br >
 - 投稿/編集/削除 機能(localStorage)
 - カレンダー(fullcalendar)
 - カテゴリ/ステータスのPieチャート(charts.js)
-
+- ソート機能（降順・昇順）
 
 
